@@ -1,0 +1,8 @@
+externalId: jetfire-cli-test-basic-deployment
+name: "jetfire-cli test: Basic deployment"
+destination: datapoints
+action: update
+shared: true
+schedule: "1 1 1 1 1"
+query: basic.sql
+apiKey: TEST_API_KEY

@@ -1,0 +1,120 @@
+on:
+  push:
+    tags:
+      - 'release/*'
+
+name: Release
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  create_release:
+    name: Create release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      version: ${{ steps.parse_version.outputs.version }}
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+    - id: parse_version
+      name: "Parse version from ref"
+      run: | # Returns the last component of the ref path, e.g. 'refs/tags/release/1.2.3-beta' -> '1.2.3-beta'
+        $version = split-path -leaf $env:GITHUB_REF
+        echo "::set-output name=version::$version"
+
+    - id: create_release
+      name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: release/${{ steps.parse_version.outputs.version }}
+        release_name: jetfire-cli ${{ steps.parse_version.outputs.version }}
+        draft: false
+        prerelease: true
+
+  build_and_upload:
+    name: Build/upload
+    needs: create_release
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+
+    strategy:
+      max-parallel: 4
+      fail-fast: true
+      matrix:
+        include:
+        - os: macos-latest
+          dotnet_runtime: osx.10.13-x64
+        - os: windows-latest
+          dotnet_runtime: win-x64
+        - os: ubuntu-latest
+          dotnet_runtime: linux-x64
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v1
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.201
+
+    - id: build_framework_dependent
+      name: Build framework-dependent assembly
+      run: >- # Note that we're using >- here. Two newlines are needed to make a single newline.
+        $asset_name = "jetfire-cli-${{ needs.create_release.outputs.version }}-${{ matrix.dotnet_runtime }}-framework-dependent"
+
+        echo "::set-output name=asset_name::${asset_name}"
+
+        dotnet publish
+        Cognite.Jetfire.Cli/Cognite.Jetfire.Cli.csproj
+        --output "assets/${asset_name}"
+        --configuration Release
+        -p:Version=${{ needs.create_release.outputs.version }}
+        --runtime ${{ matrix.dotnet_runtime }}
+        --self-contained false
+
+        compress-archive "assets/${asset_name}" "assets/${asset_name}.zip"
+
+    - id: build_self_contained
+      name: Build self-contained assembly
+      run: >- # Note that we're using >- here. Two newlines are needed to make a single newline.
+        $asset_name = "jetfire-cli-${{ needs.create_release.outputs.version }}-${{ matrix.dotnet_runtime }}-self-contained"
+
+        echo "::set-output name=asset_name::${asset_name}"
+
+        dotnet publish
+        Cognite.Jetfire.Cli/Cognite.Jetfire.Cli.csproj
+        --output "assets/${asset_name}"
+        --configuration Release
+        -p:Version=${{ needs.create_release.outputs.version }}
+        --runtime ${{ matrix.dotnet_runtime }}
+        --self-contained true
+        -p:PublishSingleFile=true
+        -p:PublishReadyToRun=true
+
+        compress-archive "assets/${asset_name}" "assets/${asset_name}.zip"
+
+    - id: upload_framework_dependent
+      name: Upload GitHub Release Asset for framework-dependent assembly
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
+        asset_path: assets/${{ steps.build_framework_dependent.outputs.asset_name }}.zip
+        asset_name: ${{ steps.build_framework_dependent.outputs.asset_name }}.zip
+        asset_content_type: application/zip
+
+    - id: upload_self_contained
+      name: Upload GitHub Release Asset for self-contained assembly
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
+        asset_path: assets/${{ steps.build_self_contained.outputs.asset_name }}.zip
+        asset_name: ${{ steps.build_self_contained.outputs.asset_name }}.zip
+        asset_content_type: application/zip

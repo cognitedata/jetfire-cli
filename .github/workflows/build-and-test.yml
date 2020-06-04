@@ -1,0 +1,43 @@
+name: Build and test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.201
+
+    - name: Install dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Debug --no-restore
+
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal /p:Exclude="[*.Test]*" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=TestResults/
+      env:
+        JETFIRE_CLI_TEST_API_KEY: ${{ secrets.JETFIRETEST_API_KEY }}
+
+    - name: Test GitHub action
+      uses: ./
+      with:
+        api-key: ${{ secrets.JETFIRETEST_API_KEY }}
+        path: Cognite.Jetfire.Test/TestData/basic-deployment
+      env:
+        TEST_API_KEY: ${{ secrets.JETFIRETEST_API_KEY }}
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}

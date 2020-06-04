@@ -1,0 +1,22 @@
+name: 'Deploy to Jetfire'
+description: 'Deploy a set of transformations to Jetfire from yaml manifests'
+inputs:
+  api-key:
+    description: 'API key for authenticating with Jetfire'
+    required: true
+  cluster:
+    description: 'CDF Cluster'
+    required: false
+    default: 'europe-west1-1'
+  path:
+    description: 'Path to a directory containing transformation manifests'
+    requried: true
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    JETFIRE_API_KEY: ${{ inputs.api-key }}
+  args: ["--cluster", "${{ inputs.cluster }}", "deploy", "${{ inputs.path }}" ]
