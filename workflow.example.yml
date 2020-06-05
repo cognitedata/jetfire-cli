@@ -1,0 +1,22 @@
+name: Deploy transformations
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    name: Deploy transformations
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deploy transformations
+      uses: cognitedata/jetfire-cli@v1
+      with:
+        path: transformations
+        api-key: ${{ secrets.JETFIRE_API_KEY }}
+        # If not using the main europe-west1-1 cluster:
+        # cluster: greenfield
+      env:
+        SOME_API_KEY: ${{ secrets.SOME_API_KEY }}
