@@ -76,7 +76,7 @@ externalId: my-transformation
 name: My Transformation
 
 
-# Optional, default: falsea
+# Optional, default: false
 shared: true
 
 
@@ -119,7 +119,6 @@ apiKey:
   write: WRITE_API_KEY
 ```
 
----
 
 ### Make a query
 
