@@ -141,7 +141,7 @@ This is equivalent to a final LIMIT clause on your query - aggregations and join
 
 There is also a _source limit_, which is configurable using the `--source-limit` parameter.
 This limits the number of rows to read from _each data source_.
-For example, if the source limit is 100, and you take the `UNION` two tables, you will get 200 rows back.
+For example, if the source limit is 100, and you take the `UNION` of two tables, you will get 200 rows back.
 This parameter is set to 100 by default, but you can remove this limit by setting it to a value that's less than 1, for example:
 
 ```sh
