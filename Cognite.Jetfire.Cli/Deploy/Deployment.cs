@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
+using System.Net;
 using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.IO;
@@ -93,7 +94,13 @@ namespace Cognite.Jetfire.Cli.Deploy
         {
             if (string.IsNullOrWhiteSpace(manifest.Transformation.Schedule))
             {
-                await client.ScheduleDelete(id);
+                try
+                {
+                    await client.ScheduleDelete(id);
+                }
+                catch (JetfireApiException e)
+                when (e.StatusCode == HttpStatusCode.NotFound)
+                {}
             }
             else
             {
