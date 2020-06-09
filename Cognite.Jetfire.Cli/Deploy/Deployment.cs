@@ -129,13 +129,10 @@ namespace Cognite.Jetfire.Cli.Deploy
 
         static DataSource ToRawTableDataSource(Destination destination)
         {
-            return new RawDataSource
-            {
-                Type = "raw_table",
-                RawType = "plain_raw",
-                Database = destination.RawDatabase,
-                Table = destination.RawTable,
-            };
+            return DataSource.Raw(
+                database: destination.RawDatabase,
+                table: destination.RawTable
+            );
         }
 
         static string ToConflictModeString(ConflictMode mode)
