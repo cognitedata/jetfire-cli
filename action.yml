@@ -9,7 +9,10 @@ inputs:
     required: false
     default: 'europe-west1-1'
   path:
-    description: 'Path to a directory containing transformation manifests'
+    description: >-
+      The path to a directory containing transformation manifests.
+      This is relative to $GITHUB_WORKSPACE,
+      which will be the root of the repository when using actions/checkout with default settings.
     requried: true
 runs:
   using: 'docker'
