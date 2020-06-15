@@ -81,7 +81,7 @@ shared: true
 
 
 # Optional, default: null
-# If null, transformation will not be scheduled.
+# If null, the transformation will not be scheduled.
 schedule: "1 * * * *"
 
 
@@ -103,8 +103,8 @@ destination:
 # Optional, default: upsert
 # Valid values are:
 #   upsert: Create new items, or update existing items if their id or externalId already exists.
-#   create: Create new items. Transformation will fail if there are id or externalId conflicts.
-#   update: Update existing items. Transformation will fail if an id or externalId does not exist.
+#   create: Create new items. The transformation will fail if there are id or externalId conflicts.
+#   update: Update existing items. The transformation will fail if an id or externalId does not exist.
 #   delete: Delete items by internal id.
 action: update
 
@@ -132,7 +132,7 @@ This will print a JSON document to standard output containing the results of you
 
 #### Query limits
 
-The query command is intended for previewing your SQL queries, and is not designed to produce bigger data dumps.
+The query command is intended for previewing your SQL queries, and is not designed for large data exports.
 For this reason, there are a few limits in place.
 
 First of all, there is a final limit of 1000 rows that can be returned from your query.
