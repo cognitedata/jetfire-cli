@@ -56,7 +56,7 @@ This GitHub action takes the following inputs:
 
 | Name      | Description |
 |-----------|-------------|
-| `path`    | _(Required)_ The path to a directory containing transformation manifests. |
+| `path`    | _(Required)_ The path to a directory containing transformation manifests. This is relative to `$GITHUB_WORKSPACE`, which will be the root of the repository when using [actions/checkout](https://github.com/actions/checkout) with default settings. |
 | `api-key` | _(Required)_ The API key used for authenticating with transformations. Equivalent to setting the `JETFIRE_API_KEY` environment variable. |
 | `cluster` | _(Optional)_ The name of the cluster where Jetfire/Transformations is hosted. |
 
