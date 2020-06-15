@@ -13,7 +13,7 @@ inputs:
       The path to a directory containing transformation manifests.
       This is relative to $GITHUB_WORKSPACE,
       which will be the root of the repository when using actions/checkout with default settings.
-    requried: true
+    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
