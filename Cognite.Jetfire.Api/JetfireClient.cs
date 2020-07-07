@@ -16,6 +16,10 @@ namespace Cognite.Jetfire.Api
 
         Task<TransformConfigId> TransformConfigCreate(TransformConfigCreate request);
 
+        Task<TransformConfigRead> TransformConfigById(int id);
+
+        Task<TransformConfigRead> TransformConfigByExternalId(string externalId);
+
         Task TransformConfigDelete(int id);
 
         Task<QueryResponse> Query(
@@ -77,6 +81,16 @@ namespace Cognite.Jetfire.Api
         {
             return SendAsync<List<TransformConfigRead>>(
                 HttpMethod.Get, "/api/transform/config?includePublic");
+        }
+
+        public Task<TransformConfigRead> TransformConfigById(int id)
+        {
+            return SendAsync<TransformConfigRead>(HttpMethod.Get, $"/api/transform/config/{id}");
+        }
+
+        public Task<TransformConfigRead> TransformConfigByExternalId(string externalId)
+        {
+            return SendAsync<TransformConfigRead>(HttpMethod.Get, $"/api/transform/configByExternalId/{externalId}");
         }
 
         public Task<TransformConfigId> TransformConfigCreate(TransformConfigCreate request)
