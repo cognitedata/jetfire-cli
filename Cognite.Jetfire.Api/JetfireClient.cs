@@ -32,6 +32,12 @@ namespace Cognite.Jetfire.Api
 
         Task TransformConfigSetPublished(int id, TransformConfigPublishOptions request);
 
+        Task<TransformJobId> TransformConfigStartJob(int id);
+
+        Task<TransformJob[]> TransformConfigRecentJobs(int id);
+
+        Task<MetricCounter[]> TransformJobMetrics(string jobId);
+
         Task ScheduleCreateOrUpdate(int id, ScheduleParams request);
 
         Task ScheduleDelete(int id);
@@ -102,6 +108,21 @@ namespace Cognite.Jetfire.Api
         public Task TransformConfigSetPublished(int id, TransformConfigPublishOptions request)
         {
             return SendAsync(HttpMethod.Put, $"/api/transform/config/{id}/setPublished", request);
+        }
+
+        public Task<TransformJobId> TransformConfigStartJob(int id)
+        {
+            return SendAsync<TransformJobId>(HttpMethod.Post, $"/api/transform/config/run/{id}");
+        }
+
+        public Task<TransformJob[]> TransformConfigRecentJobs(int id)
+        {
+            return SendAsync<TransformJob[]>(HttpMethod.Get, $"/api/transform/jobDetails/{id}");
+        }
+
+        public Task<MetricCounter[]> TransformJobMetrics(string jobId)
+        {
+            return SendAsync<MetricCounter[]>(HttpMethod.Get, $"/api/transform/jobs/{jobId}/metrics");
         }
 
         public Task ScheduleCreateOrUpdate(int id, ScheduleParams request)
