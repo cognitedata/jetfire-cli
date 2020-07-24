@@ -56,7 +56,7 @@ namespace Cognite.Jetfire.Api
         {
             var invalidCredentials = new ApiKeyCredentials("Not a valid API key");
             var invalidAuthClient = new JetfireClient(TestEnvironment.Jetfiretest1.BaseUri, invalidCredentials);
-            var exception = await Assert.ThrowsAsync<JetfireApiException>(invalidAuthClient.TransformConfigList);
+            var exception = await Assert.ThrowsAsync<JetfireApiException>(() => invalidAuthClient.TransformConfigList());
             Assert.Equal(HttpMethod.Get, exception.Method);
             Assert.Equal("/api/transform/config?includePublic", exception.Uri.PathAndQuery);
             Assert.Equal(HttpStatusCode.Unauthorized, exception.StatusCode);
