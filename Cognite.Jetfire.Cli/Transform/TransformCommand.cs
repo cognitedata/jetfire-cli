@@ -26,27 +26,27 @@ namespace Cognite.Jetfire.Cli.Transform
 
             Command = new Command("transform", "Start or watch transformation jobs.")
             {
-                new Option<int?>("id")
+                new Option<int?>("--id")
                 {
                     Description = "The id of a transformation."
                 },
-                new Option<string>("external-id")
+                new Option<string>("--external-id")
                 {
                     Description = "The external ID of a transformation."
                 },
-                new Option<bool>("watch")
+                new Option<bool>("--watch")
                 {
                     Description = "Wait until job has completed."
                 },
-                new Option<bool>("watch-only")
+                new Option<bool>("--watch-only")
                 {
                     Description = "Do not start a transformation job, only watch the most recent job for completion."
                 },
-                new Option<TimeSpan>("timeout", () => TimeSpan.FromHours(12))
+                new Option<TimeSpan>("--timeout", () => TimeSpan.FromHours(12))
                 {
                     Description = "Maximum amount of time to wait for job to complete."
                 },
-                new Option<TimeSpan>("interval", () => TimeSpan.FromHours(12))
+                new Option<TimeSpan>("--interval", () => TimeSpan.FromSeconds(5))
                 {
                     Description = "Time interval for polling job status."
                 }
