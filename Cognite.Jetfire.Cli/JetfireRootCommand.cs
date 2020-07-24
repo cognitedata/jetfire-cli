@@ -12,7 +12,8 @@ namespace Cognite.Jetfire.Cli
     {
         public JetfireRootCommand(
             Deploy.DeployCommand deployCommand,
-            Query.QueryCommand queryCommand
+            Query.QueryCommand queryCommand,
+            Transform.TransformCommand transformCommand
         )
         {
             Command = new RootCommand
@@ -24,6 +25,7 @@ namespace Cognite.Jetfire.Cli
                 ),
                 deployCommand.Command,
                 queryCommand.Command,
+                transformCommand.Command,
             };
         }
 
