@@ -32,7 +32,7 @@ namespace Cognite.Jetfire.Cli.Transform
                 },
                 new Option<string>("--external-id")
                 {
-                    Description = "The external ID of a transformation."
+                    Description = "The externalId of a transformation."
                 },
                 new Option<bool>("--watch")
                 {
