@@ -7,6 +7,7 @@ using System.Net.Http;
 using Cognite.Jetfire.Api.Model;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Cognite.Jetfire.Api
 {
@@ -26,17 +27,22 @@ namespace Cognite.Jetfire.Api
             };
         }
 
-        public Task<TRes> SendAsync<TRes>(HttpMethod method, string uri)
+        public Task<TRes> SendAsync<TRes>(HttpMethod method, string uri, CancellationToken ct = default)
         {
-            return SendAsync<TRes>(new HttpRequestMessage(method, uri));
+            return SendAsync<TRes>(new HttpRequestMessage(method, uri), ct);
         }
 
-        public Task<TRes> SendAsync<TReq, TRes>(HttpMethod method, string uri, TReq body)
+        public Task<TRes> SendAsync<TReq, TRes>(HttpMethod method, string uri, TReq body, CancellationToken ct = default)
         {
-            return SendAsync<TReq, TRes>(new HttpRequestMessage(method, uri), body);
+            return SendAsync<TReq, TRes>(new HttpRequestMessage(method, uri), body, ct);
         }
 
-        public Task<HttpResponseMessage> SendAsync(HttpMethod method, string uri, object body = null)
+        public Task<HttpResponseMessage> SendAsync(HttpMethod method, string uri, CancellationToken ct)
+        {
+            return SendAsync(method, uri, body: null, ct);
+        }
+
+        public Task<HttpResponseMessage> SendAsync(HttpMethod method, string uri, object body = null, CancellationToken ct = default)
         {
             var request = new HttpRequestMessage(method, uri);
             if (body != null)
@@ -44,29 +50,31 @@ namespace Cognite.Jetfire.Api
                 var json = JsonSerializer.Serialize(body, JsonConfig.SerializerOptions);
                 request.Content = new StringContent(json);
             }
-            return SendAsync(request);
+            return SendAsync(request, ct);
         }
 
-        public async Task<TRes> SendAsync<TReq, TRes>(HttpRequestMessage request, TReq body)
+        public async Task<TRes> SendAsync<TReq, TRes>(HttpRequestMessage request, TReq body, CancellationToken ct = default)
         {
             var json = JsonSerializer.Serialize(body, JsonConfig.SerializerOptions);
             request.Content = new StringContent(json);
-            return await SendAsync<TRes>(request);
+            return await SendAsync<TRes>(request, ct);
         }
 
-        public async Task<TRes> SendAsync<TRes>(HttpRequestMessage request)
+        public async Task<TRes> SendAsync<TRes>(HttpRequestMessage request, CancellationToken ct = default)
         {
-            var response = await SendAsync(request);
+            var response = await SendAsync(request, ct);
             using (var responseStream = await response.Content.ReadAsStreamAsync())
             {
-                return await JsonSerializer.DeserializeAsync<TRes>(responseStream, JsonConfig.SerializerOptions);
+                return await JsonSerializer.DeserializeAsync<TRes>(responseStream, JsonConfig.SerializerOptions, ct);
             }
         }
 
-        public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
+        public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct = default)
         {
             Credentials.Apply(request);
-            var response = await Http.SendAsync(request);
+
+            var response = await Http.SendAsync(request, ct);
+
             if (!response.IsSuccessStatusCode)
             {
                 JetfireApiError error = null;
