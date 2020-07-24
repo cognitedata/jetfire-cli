@@ -126,6 +126,7 @@ namespace Cognite.Jetfire.Cli.Transform
                     {
                         await Task.Delay(interval, cancellationToken);
                     }
+                    Console.Out.WriteLine("Job completed successfully");
                 }
                 catch (TaskCanceledException)
                 {
