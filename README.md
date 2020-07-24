@@ -119,6 +119,30 @@ apiKey:
   write: WRITE_API_KEY
 ```
 
+### Start a transformation job
+
+`jetfire-cli` also provides a `transform` subcommand, which can start transformation jobs and/or wait for jobs to complete.
+
+At minimum, this command requires either an `--id` or `--external-id` to be specified:
+
+```sh
+jetfire transform --id=1234
+jetfire transform --external-id=my-transformation
+```
+
+Without any additional arguments, this command will start a transformation job, and exit immediately.
+If you want wait for the job to complete, use the `--watch` option:
+
+```sh
+jetfire transform --id=1234 --watch
+```
+
+When using the `--watch` option, `jetfire-cli` will return a non-zero exit code if the transformation job failed, or if it did not finish within a given timeout (which is 12 hours by default). This timeout can be configured using the `--timeout` option.
+
+If you want to watch a job for completion without actually starting a transformation job, specify `--watch-only` instead of `--watch`. This will watch the most recently started job for completion.
+
+See `jetfire transform --help` for more details.
+
 
 ### Make a query
 
