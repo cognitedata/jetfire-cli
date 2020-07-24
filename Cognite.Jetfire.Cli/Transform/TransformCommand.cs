@@ -28,11 +28,11 @@ namespace Cognite.Jetfire.Cli.Transform
             {
                 new Option<int?>("--id")
                 {
-                    Description = "The id of a transformation"
+                    Description = "The id of the transformation to run. Either this or --external-id must be specified."
                 },
                 new Option<string>("--external-id")
                 {
-                    Description = "The externalId of a transformation"
+                    Description = "The externalId of the transformation to run. Either this or --id must be specified."
                 },
                 new Option<bool>("--watch")
                 {
