@@ -16,15 +16,15 @@ using Cognite.Jetfire.Cli.Deploy.Manifest;
 using System.Threading;
 using System.CommandLine.Binding;
 
-namespace Cognite.Jetfire.Cli.Transform
+namespace Cognite.Jetfire.Cli.Run
 {
-    public class TransformCommand
+    public class RunCommand
     {
-        public TransformCommand(ISecretsProvider secrets)
+        public RunCommand(ISecretsProvider secrets)
         {
             this.secrets = secrets;
 
-            Command = new Command("transform", "Start or watch transformation jobs")
+            Command = new Command("run", "Start and/or watch transformation jobs")
             {
                 new Option<int?>("--id")
                 {
