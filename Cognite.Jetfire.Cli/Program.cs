@@ -6,7 +6,7 @@ using System.CommandLine;
 using System.Threading.Tasks;
 using Cognite.Jetfire.Cli.Deploy;
 using Cognite.Jetfire.Cli.Query;
-using Cognite.Jetfire.Cli.Transform;
+using Cognite.Jetfire.Cli.Run;
 
 namespace Cognite.Jetfire.Cli
 {
@@ -19,7 +19,7 @@ namespace Cognite.Jetfire.Cli
             var rootCommand = new JetfireRootCommand(
                 new DeployCommand(secrets),
                 new QueryCommand(secrets),
-                new TransformCommand(secrets)
+                new RunCommand(secrets)
             );
 
             return await rootCommand.Command.InvokeAsync(args);
