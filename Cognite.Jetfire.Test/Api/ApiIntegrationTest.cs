@@ -65,16 +65,6 @@ namespace Cognite.Jetfire.Api
         }
 
         [Fact]
-        public async Task BodyIsNullIfNotPresent()
-        {
-            var exception = await Assert.ThrowsAsync<JetfireApiException>(
-                () => client.SendAsync(HttpMethod.Get, "/nowhere"));
-
-            Assert.Equal(HttpStatusCode.NotFound, exception.StatusCode);
-            Assert.Null(exception.Error);
-        }
-
-        [Fact]
         public async Task QueryTest()
         {
             var result = await client.Query(new QueryRequest
@@ -83,11 +73,13 @@ namespace Cognite.Jetfire.Api
             });
             Assert.Collection(
                 result.Schema,
-                col => {
+                col =>
+                {
                     Assert.Equal("INT", col.SqlType);
                     Assert.Equal("firstColumn", col.Name);
                 },
-                col => {
+                col =>
+                {
                     Assert.Equal("STRING", col.SqlType);
                     Assert.Equal("secondColumn", col.Name);
                 }
@@ -134,7 +126,7 @@ namespace Cognite.Jetfire.Api
                 Assert.Equal(HttpStatusCode.BadRequest, duplicateExtIdException.StatusCode);
                 Assert.Equal("Duplicate externalId is not allowed", duplicateExtIdException.Error.Message);
 
-                var invalidExternalIdConfig = new TransformConfigCreate{ ExternalId = "  foo  bar ", Name = "Test: Create from C# API", Query = "Foo" };
+                var invalidExternalIdConfig = new TransformConfigCreate { ExternalId = "  foo  bar ", Name = "Test: Create from C# API", Query = "Foo" };
                 var invalidExternalId = await Assert.ThrowsAsync<JetfireApiException>(
                     () => client.TransformConfigCreate(invalidExternalIdConfig));
                 Assert.Equal(HttpMethod.Post, invalidExternalId.Method);
