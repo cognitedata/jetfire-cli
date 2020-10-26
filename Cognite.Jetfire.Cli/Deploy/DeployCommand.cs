@@ -16,7 +16,7 @@ using Cognite.Jetfire.Cli.Deploy.Manifest;
 
 namespace Cognite.Jetfire.Cli.Deploy
 {
-    public class DeployCommand
+    public class DeployCommand : IJetfireSubCommand
     {
         public DeployCommand(ISecretsProvider secrets)
         {

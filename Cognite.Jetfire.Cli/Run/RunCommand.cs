@@ -18,7 +18,7 @@ using System.CommandLine.Binding;
 
 namespace Cognite.Jetfire.Cli.Run
 {
-    public class RunCommand
+    public class RunCommand : IJetfireSubCommand
     {
         public RunCommand(ISecretsProvider secrets)
         {

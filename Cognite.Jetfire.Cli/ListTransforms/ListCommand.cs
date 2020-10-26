@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Cognite.Jetfire.Cli.ListTransforms
 {
-    public class ListCommand
+    public class ListCommand : IJetfireSubCommand
     {
         public Command Command { get; }
         private ISecretsProvider Secrets;
