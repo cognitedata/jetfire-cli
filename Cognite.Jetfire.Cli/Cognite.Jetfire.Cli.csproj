@@ -16,4 +16,7 @@
     <ProjectReference Include="..\Cognite.Jetfire.Api\Cognite.Jetfire.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ListTransforms\" />
+  </ItemGroup>
 </Project>
