@@ -10,5 +10,11 @@ namespace Cognite.Jetfire.Api.Model
         public bool? IsPaused { get; set; }
 
         public string Interval { get; set; }
+
+        override public string ToString()
+        {
+            if (IsPaused ?? false) return "Paused";
+            else return Interval;
+        }
     }
 }
