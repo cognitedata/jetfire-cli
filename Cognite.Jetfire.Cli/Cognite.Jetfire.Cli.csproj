@@ -18,5 +18,6 @@
 
   <ItemGroup>
     <Folder Include="ListTransforms\" />
+    <Folder Include="Show\" />
   </ItemGroup>
 </Project>

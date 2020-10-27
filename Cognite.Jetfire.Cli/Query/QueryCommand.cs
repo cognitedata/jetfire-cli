@@ -13,7 +13,7 @@ using Cognite.Jetfire.Api.Model;
 
 namespace Cognite.Jetfire.Cli.Query
 {
-    public class QueryCommand
+    public class QueryCommand : IJetfireSubCommand
     {
         public Command Command { get; }
 
