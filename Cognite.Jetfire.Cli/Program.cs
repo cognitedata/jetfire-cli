@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.CommandLine;
 using System.Threading.Tasks;
+using Cognite.Jetfire.Cli.Delete;
 using Cognite.Jetfire.Cli.Deploy;
 using Cognite.Jetfire.Cli.ListTransforms;
 using Cognite.Jetfire.Cli.Query;
@@ -25,7 +26,8 @@ namespace Cognite.Jetfire.Cli
                     new QueryCommand(secrets),
                     new RunCommand(secrets),
                     new ListCommand(secrets),
-                    new ShowCommand(secrets)
+                    new ShowCommand(secrets),
+                    new DeleteCommand(secrets),
                 }
             );
 
