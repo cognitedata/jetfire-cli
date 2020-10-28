@@ -12,7 +12,7 @@ namespace Cognite.Jetfire.Cli
 {
     public class JetfireRootCommand
     {
-        public JetfireRootCommand(IList<IJetfireSubCommand> subCommands)
+        public JetfireRootCommand(IEnumerable<IJetfireSubCommand> subCommands)
         {
             Command = new RootCommand
             {
