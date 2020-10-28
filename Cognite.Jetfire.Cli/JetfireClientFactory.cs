@@ -22,7 +22,7 @@ namespace Cognite.Jetfire.Cli
             var apiKey = secrets.GetNamedSecret(ApiKeyEnvironmentVariable);
             if (string.IsNullOrWhiteSpace(apiKey))
             {
-                throw new Exception($"The {ApiKeyEnvironmentVariable} environment variable must be set");
+                throw new JetfireCliException($"The {ApiKeyEnvironmentVariable} environment variable must be set");
             }
             return new ApiKeyCredentials(apiKey);
         }

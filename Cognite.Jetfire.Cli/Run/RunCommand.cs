@@ -78,7 +78,7 @@ namespace Cognite.Jetfire.Cli.Run
             if (id == null && externalId == null ||
                 id != null && externalId != null)
             {
-                throw new Exception("Either --id or --external-id must be specified");
+                throw new JetfireCliException("Either --id or --external-id must be specified");
             }
 
             int configId;
@@ -174,7 +174,7 @@ namespace Cognite.Jetfire.Cli.Run
         }
     }
 
-    public class JobStatusException : Exception
+    public class JobStatusException : JetfireCliException
     {
         public TransformJob Job { get; }
 

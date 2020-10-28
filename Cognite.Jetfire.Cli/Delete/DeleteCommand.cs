@@ -35,7 +35,7 @@ namespace Cognite.Jetfire.Cli.Delete
             if (id == null && externalId == null ||
                 id != null && externalId != null)
             {
-                throw new Exception("Either --id or --external-id must be specified");
+                throw new JetfireCliException("Either --id or --external-id must be specified");
             }
 
             using (var client = JetfireClientFactory.CreateClient(secrets, cluster))

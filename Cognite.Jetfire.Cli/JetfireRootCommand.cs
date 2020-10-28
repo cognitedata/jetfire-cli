@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
+using System.CommandLine.Builder;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,6 +28,18 @@ namespace Cognite.Jetfire.Cli
             {
                 Command.Add(subCommand.Command);
             }
+
+            var _ = new CommandLineBuilder(Command)
+               .UseVersionOption()
+               .UseHelp()
+               .UseParseDirective()
+               .UseDebugDirective()
+               .UseSuggestDirective()
+               .RegisterWithDotnetSuggest()
+               .UseTypoCorrections()
+               .UseParseErrorReporting()
+               .CancelOnProcessTermination()
+               .Build();
         }
 
         public RootCommand Command { get; }

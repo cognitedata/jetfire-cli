@@ -49,7 +49,7 @@ namespace Cognite.Jetfire.Cli.Show
                 }
                 else
                 {
-                    throw new Exception("Either --id or --external-id must be specified");
+                    throw new JetfireCliException("Either --id or --external-id must be specified");
                 }
             }
 
