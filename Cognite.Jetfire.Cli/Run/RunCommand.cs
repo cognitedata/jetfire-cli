@@ -75,22 +75,7 @@ namespace Cognite.Jetfire.Cli.Run
         {
             var client = JetfireClientFactory.CreateClient(secrets, cluster);
 
-            if (id == null && externalId == null ||
-                id != null && externalId != null)
-            {
-                throw new JetfireCliException("Either --id or --external-id must be specified");
-            }
-
-            int configId;
-            if (id != null)
-            {
-                configId = id.Value;
-            }
-            else
-            {
-                var config = await client.TransformConfigByExternalId(externalId);
-                configId = config.Id;
-            }
+            int configId = await Utils.ResolveEitherId(id, externalId, client);
 
             string jobUuid;
             if (watchOnly)

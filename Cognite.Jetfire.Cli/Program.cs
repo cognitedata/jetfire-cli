@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Cognite.Jetfire.Api;
 using Cognite.Jetfire.Cli.Delete;
 using Cognite.Jetfire.Cli.Deploy;
+using Cognite.Jetfire.Cli.Jobs;
 using Cognite.Jetfire.Cli.ListTransforms;
 using Cognite.Jetfire.Cli.Query;
 using Cognite.Jetfire.Cli.Run;
@@ -29,6 +30,7 @@ namespace Cognite.Jetfire.Cli
                     new ListCommand(secrets),
                     new ShowCommand(secrets),
                     new DeleteCommand(secrets),
+                    new JobsCommand(secrets),
                 }
             );
 
@@ -48,7 +50,7 @@ namespace Cognite.Jetfire.Cli
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"Unhandled error: {e.Message}");
+                Console.Error.WriteLine($"Unhandled error: {e.Message}. ");
                 Console.Error.WriteLine(e.StackTrace);
                 return 1;
             }
