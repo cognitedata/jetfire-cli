@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.CommandLine;
 using System.Threading.Tasks;
+using Cognite.Jetfire.Api;
 using Cognite.Jetfire.Cli.Delete;
 using Cognite.Jetfire.Cli.Deploy;
 using Cognite.Jetfire.Cli.ListTransforms;
@@ -31,7 +32,26 @@ namespace Cognite.Jetfire.Cli
                 }
             );
 
-            return await rootCommand.Command.InvokeAsync(args);
+            try
+            {
+                return await rootCommand.Command.InvokeAsync(args);
+            }
+            catch (JetfireCliException e)
+            {
+                Console.Error.WriteLine($"Error: {e.Message}");
+                return 1;
+            }
+            catch (JetfireApiException e)
+            {
+                Console.Error.WriteLine($"API Error: {e.Message}");
+                return 1;
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine($"Unhandled error: {e.Message}");
+                Console.Error.WriteLine(e.StackTrace);
+                return 1;
+            }
         }
     }
 }
