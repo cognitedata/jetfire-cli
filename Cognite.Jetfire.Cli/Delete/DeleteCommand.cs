@@ -32,22 +32,10 @@ namespace Cognite.Jetfire.Cli.Delete
 
         async Task Handle(string cluster, int? id, string externalId)
         {
-            if (id == null && externalId == null ||
-                id != null && externalId != null)
-            {
-                throw new JetfireCliException("Either --id or --external-id must be specified");
-            }
-
             using (var client = JetfireClientFactory.CreateClient(secrets, cluster))
             {
-                // Resolve externalId if necessary
-                if (id == null)
-                {
-                    var transform = await client.TransformConfigByExternalId(externalId, new CancellationToken());
-                    id = transform.Id;
-                }
-
-                await client.TransformConfigDelete(id.Value);
+                int configId = await Utils.ResolveEitherId(id, externalId, client);
+                await client.TransformConfigDelete(configId);
             }
         }
     }

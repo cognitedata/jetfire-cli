@@ -37,5 +37,21 @@ namespace Cognite.Jetfire.Api.Model
         public long? LastSeenTime { get; set; }
 
         public string Error { get; set; }
+
+        public string Status()
+        {
+            if (FinishedTime == null)
+            {
+                return "running";
+            }
+            else if (Error == null)
+            {
+                return "success";
+            }
+            else
+            {
+                return "failed";
+            }
+        }
     }
 }

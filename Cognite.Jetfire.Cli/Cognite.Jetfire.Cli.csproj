@@ -20,5 +20,6 @@
     <Folder Include="ListTransforms\" />
     <Folder Include="Show\" />
     <Folder Include="Delete\" />
+    <Folder Include="Jobs\" />
   </ItemGroup>
 </Project>
