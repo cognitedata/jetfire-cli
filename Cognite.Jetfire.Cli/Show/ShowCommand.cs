@@ -162,15 +162,19 @@ namespace Cognite.Jetfire.Cli.Show
             async Task<Dictionary<string, long>> GetLatestMetrics(string jobId, IJetfireClient client)
             {
                 var metrics = await client.TransformJobMetrics(jobId, new CancellationToken());
-                var dict = new Dictionary<string, long>();
+                var latest = new Dictionary<string, long>();
+                var latestTimestamp = new Dictionary<string, long>();
 
-                // Assume sorted result from API
                 foreach (var counter in metrics)
                 {
-                    dict[counter.Name] = counter.Count;
+                    if (counter.Timestamp >= latestTimestamp.GetValueOrDefault(counter.Name, 0))
+                    {
+                        latest[counter.Name] = counter.Count;
+                        latestTimestamp[counter.Name] = counter.Timestamp;
+                    }
                 }
 
-                return dict;
+                return latest;
             }
         }
     }
