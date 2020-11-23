@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
+using Cognite.Extractor.Configuration;
+using Cognite.Extractor.Utils;
 using Cognite.Jetfire.Api;
 
 namespace Cognite.Jetfire.Cli
@@ -9,6 +11,7 @@ namespace Cognite.Jetfire.Cli
     public static class JetfireClientFactory
     {
         static readonly string ApiKeyEnvironmentVariable = "JETFIRE_API_KEY";
+        static readonly string CredentialsEnvironmentVariable = "JETFIRE_IDP_CREDENTIALS";
 
         public static IJetfireClient CreateClient(ISecretsProvider secrets, string cluster)
         {
@@ -20,11 +23,21 @@ namespace Cognite.Jetfire.Cli
         static ICredentials GetCredentials(ISecretsProvider secrets)
         {
             var apiKey = secrets.GetNamedSecret(ApiKeyEnvironmentVariable);
-            if (string.IsNullOrWhiteSpace(apiKey))
+            var credentialsPath = secrets.GetNamedSecret(CredentialsEnvironmentVariable);
+            if (!string.IsNullOrWhiteSpace(apiKey))
             {
-                throw new JetfireCliException($"The {ApiKeyEnvironmentVariable} environment variable must be set");
+                return new ApiKeyCredentials(apiKey);
             }
-            return new ApiKeyCredentials(apiKey);
+            else if (!string.IsNullOrEmpty(credentialsPath))
+            {
+                var config = ConfigurationUtils.Read<AuthenticatorConfig>(credentialsPath);
+                return new TokenCredentials(config);
+            }
+            else
+            {
+                throw new JetfireCliException($"Either the {ApiKeyEnvironmentVariable} or {CredentialsEnvironmentVariable} environment variable must be set");
+            }
+
         }
 
         static Uri GetBaseUriFromCluster(string cluster)
