@@ -38,14 +38,14 @@ namespace Cognite.Jetfire.Cli
             {
                 return await rootCommand.Command.InvokeAsync(args);
             }
-            catch (JetfireCliException e)
-            {
-                Console.Error.WriteLine($"Error: {e.Message}");
-                return 1;
-            }
             catch (JetfireApiException e)
             {
                 Console.Error.WriteLine($"API Error: {e.Message}");
+                return 1;
+            }
+            catch (JetfireBaseException e)
+            {
+                Console.Error.WriteLine($"Error: {e.Message}");
                 return 1;
             }
             catch (Exception e)

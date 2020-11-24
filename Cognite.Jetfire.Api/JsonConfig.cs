@@ -11,6 +11,7 @@ namespace Cognite.Jetfire.Api
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             WriteIndented = true,
+            IgnoreNullValues = true
         };
     }
 }

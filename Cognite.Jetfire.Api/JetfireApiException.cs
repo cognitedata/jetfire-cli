@@ -9,7 +9,7 @@ using Cognite.Jetfire.Api.Model;
 
 namespace Cognite.Jetfire.Api
 {
-    public class JetfireApiException : Exception
+    public class JetfireApiException : JetfireBaseException
     {
         public HttpStatusCode StatusCode { get; }
 

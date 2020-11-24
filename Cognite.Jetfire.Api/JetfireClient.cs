@@ -54,7 +54,7 @@ namespace Cognite.Jetfire.Api
             CancellationToken ct = default
         );
 
-        Task<TransformJobId> TransformConfigStartJob(int id, CancellationToken ct = default);
+        Task<TransformJobId> TransformConfigStartJob(int id, DualAuth auth = null, CancellationToken ct = default);
 
         Task<TransformJob[]> TransformConfigRecentJobs(int id, CancellationToken ct = default);
 
@@ -104,7 +104,7 @@ namespace Cognite.Jetfire.Api
     public class JetfireClient : JetfireBaseClient, IJetfireClient
     {
         public JetfireClient(Uri baseUri, ICredentials credentials)
-            : base (baseUri, credentials)
+            : base(baseUri, credentials)
         {
         }
 
@@ -144,8 +144,8 @@ namespace Cognite.Jetfire.Api
             CancellationToken ct = default
         ) => SendAsync(HttpMethod.Put, $"/api/transform/config/{id}/setPublished", request, ct);
 
-        public Task<TransformJobId> TransformConfigStartJob(int id, CancellationToken ct = default)
-            => SendAsync<TransformJobId>(HttpMethod.Post, $"/api/transform/config/run/{id}", ct);
+        public Task<TransformJobId> TransformConfigStartJob(int id, DualAuth auth = null, CancellationToken ct = default)
+            => SendAsync<DualAuth, TransformJobId>(HttpMethod.Post, $"/api/transform/config/run/{id}", auth, ct);
 
         public Task<TransformJob[]> TransformConfigRecentJobs(int id, CancellationToken ct = default)
             => SendAsync<TransformJob[]>(HttpMethod.Get, $"/api/transform/jobDetails/{id}", ct);
@@ -187,7 +187,7 @@ namespace Cognite.Jetfire.Api
 
         static string MakeQueryString(IEnumerable<KeyValuePair<string, string>> items)
         {
-            using(var content = new FormUrlEncodedContent(items))
+            using (var content = new FormUrlEncodedContent(items))
             {
                 return content.ReadAsStringAsync().Result;
             }

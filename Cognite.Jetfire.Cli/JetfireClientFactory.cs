@@ -30,8 +30,8 @@ namespace Cognite.Jetfire.Cli
             }
             else if (!string.IsNullOrEmpty(credentialsPath))
             {
-                var config = ConfigurationUtils.Read<AuthenticatorConfig>(credentialsPath);
-                return new TokenCredentials(config);
+                var auth = ConfigurationUtils.Read<SingleAuth>(credentialsPath);
+                return auth.GetCredentials();
             }
             else
             {

@@ -15,6 +15,7 @@ using Cognite.Jetfire.Api.Model;
 using Cognite.Jetfire.Cli.Deploy.Manifest;
 using System.Threading;
 using System.CommandLine.Binding;
+using Cognite.Extractor.Configuration;
 
 namespace Cognite.Jetfire.Cli.Run
 {
@@ -49,10 +50,18 @@ namespace Cognite.Jetfire.Cli.Run
                 new Option<TimeSpan>("--interval", () => TimeSpan.FromSeconds(5))
                 {
                     Description = "Time interval for polling job status"
+                },
+                new Option<string>("--read-auth")
+                {
+                    Description = "Override read authentication from transform config"
+                },
+                new Option<string>("--write-auth")
+                {
+                    Description = "Override write authentication from transform config"
                 }
             };
             Command.Handler = CommandHandler.Create(
-                (Func<IConsole, string, int?, string, bool, bool, TimeSpan, TimeSpan, Task<int>>)Handle
+                (Func<IConsole, string, int?, string, bool, bool, TimeSpan, TimeSpan, string, string, Task<int>>)Handle
             );
         }
 
@@ -70,7 +79,9 @@ namespace Cognite.Jetfire.Cli.Run
             bool watch,
             bool watchOnly,
             TimeSpan timeout,
-            TimeSpan interval
+            TimeSpan interval,
+            string readAuth,
+            string writeAuth
         )
         {
             var client = JetfireClientFactory.CreateClient(secrets, cluster);
@@ -90,9 +101,27 @@ namespace Cognite.Jetfire.Cli.Run
                 {
                     console.Out.Write($" (externalId: {externalId})");
                 }
+
+                DualAuth authOverride = new DualAuth();
+                string printStatement = null;
+                if (readAuth != null)
+                {
+                    authOverride.ReadAuth = ConfigurationUtils.Read<SingleAuth>(readAuth);
+                    printStatement = "read";
+                }
+                if (writeAuth != null)
+                {
+                    authOverride.ReadAuth = ConfigurationUtils.Read<SingleAuth>(writeAuth);
+                    printStatement = printStatement is null ? "write" : "read and write";
+                }
+                if (printStatement != null)
+                {
+                    console.Out.Write($" with auth override for {printStatement}");
+                }
+
                 console.Out.WriteLine();
 
-                var startJobResult = await client.TransformConfigStartJob(configId);
+                var startJobResult = await client.TransformConfigStartJob(configId, authOverride);
                 console.Out.WriteLine($"Started job {startJobResult.JobId}");
                 jobUuid = startJobResult.JobId;
             }
