@@ -50,7 +50,7 @@ namespace Cognite.Jetfire.Cli.Deploy
             {
                 transformId = existingTransformToUpdate.Id;
                 console.Out.WriteLine($"Transformation '{externalId}' already exists, updating...");
-                await Update(existingTransformToUpdate.Id, resolvedManifest);
+                await Update(existingTransformToUpdate, resolvedManifest);
             }
 
             console.Out.WriteLine($"Updating schedule for transformation '{externalId}'");
@@ -75,8 +75,9 @@ namespace Cognite.Jetfire.Cli.Deploy
             });
         }
 
-        async Task Update(int id, ResolvedManifest manifest)
+        async Task Update(TransformConfigRead transformToUpdate, ResolvedManifest manifest)
         {
+            var id = transformToUpdate.Id;
             await client.TransformConfigUpdate(id, new TransformConfigUpdate
             {
                 Name = manifest.Transformation.Name,
@@ -87,7 +88,11 @@ namespace Cognite.Jetfire.Cli.Deploy
 
             await client.TransformConfigUpdateSourceApiKey(id, manifest.ReadApiKey);
             await client.TransformConfigUpdateDestinationApiKey(id, manifest.WriteApiKey);
-            await client.TransformConfigSetPublished(id, manifest.Transformation.Shared);
+
+            if (transformToUpdate.IsPublic != manifest.Transformation.Shared)
+            {
+                await client.TransformConfigSetPublished(id, manifest.Transformation.Shared);
+            }
         }
 
         async Task UpdateSchedule(int id, ResolvedManifest manifest)
