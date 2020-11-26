@@ -22,6 +22,8 @@ namespace Cognite.Jetfire.Api.Model
         public string ConflictMode { get; set; }
 
         public ScheduleParams Schedule { get; set; }
+
+        public bool IsPublic { get; set; }
     }
 
     public class TransformConfigCreate
