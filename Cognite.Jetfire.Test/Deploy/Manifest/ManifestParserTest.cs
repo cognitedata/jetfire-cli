@@ -78,6 +78,7 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
         [InlineData(DestinationType.Datapoints, "datapoints")]
         [InlineData(DestinationType.StringDatapoints, "stringdatapoints")]
         [InlineData(DestinationType.StringDatapoints, "stringDatapoints")]
+        [InlineData(DestinationType.Files, "files")]
         [InlineData(DestinationType.Assets, "assets")]
         public void ParseShorthandDestination(DestinationType destinationType, string destinationTypeName)
         {
