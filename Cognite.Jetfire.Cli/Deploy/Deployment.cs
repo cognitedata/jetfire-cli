@@ -128,6 +128,7 @@ namespace Cognite.Jetfire.Cli.Deploy
                 DestinationType.Timeseries => new DataSource("timeseries"),
                 DestinationType.Datapoints => new DataSource("datapoints"),
                 DestinationType.StringDatapoints => new DataSource("string_datapoints"),
+                DestinationType.Files => new DataSource("files"),
                 _ => throw new ArgumentException($"Unknown data source type '{destination.Type}'", nameof(destination)),
             };
         }

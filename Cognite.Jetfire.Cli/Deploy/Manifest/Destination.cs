@@ -14,6 +14,7 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
         Timeseries,
         Datapoints,
         StringDatapoints,
+        Files,
     }
 
     public class Destination
