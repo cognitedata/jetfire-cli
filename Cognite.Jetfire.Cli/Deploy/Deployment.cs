@@ -130,6 +130,8 @@ namespace Cognite.Jetfire.Cli.Deploy
                 DestinationType.StringDatapoints => new DataSource("string_datapoints"),
                 DestinationType.Files => new DataSource("files"),
                 DestinationType.Sequences => new DataSource("sequences"),
+                DestinationType.Labels => new DataSource("labels"),
+                DestinationType.Relationships => new DataSource("relationships"),
                 _ => throw new ArgumentException($"Unknown data source type '{destination.Type}'", nameof(destination)),
             };
         }
