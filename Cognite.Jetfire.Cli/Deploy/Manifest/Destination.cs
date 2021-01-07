@@ -16,6 +16,8 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
         StringDatapoints,
         Files,
         Sequences,
+        Labels,
+        Relationships,
     }
 
     public class Destination
