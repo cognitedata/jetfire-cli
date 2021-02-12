@@ -57,6 +57,10 @@ namespace Cognite.Jetfire.Cli.Deploy
 
             await UpdateSchedule(transformId, resolvedManifest);
 
+            console.Out.WriteLine($"Updating notification rules for transformation '{externalId}'");
+
+            await UpdateNotifications(transformId, resolvedManifest);
+
             console.Out.WriteLine($"Transformation '{externalId}' was deployed successfully.");
         }
 
@@ -105,7 +109,7 @@ namespace Cognite.Jetfire.Cli.Deploy
                 }
                 catch (JetfireApiException e)
                 when (e.StatusCode == HttpStatusCode.NotFound)
-                {}
+                { }
             }
             else
             {
@@ -114,6 +118,45 @@ namespace Cognite.Jetfire.Cli.Deploy
                     Interval = manifest.Transformation.Schedule,
                     IsPaused = false,
                 });
+            }
+        }
+
+        async Task UpdateNotifications(int id, ResolvedManifest manifest)
+        {
+            var existingDestinations = new List<NotificationRead>(await client.NotificationList(id));
+
+            var toCreate = new List<string>();
+            var toDelete = new List<NotificationRead>();
+
+            if (manifest.Transformation.Notifications != null)
+            {
+                foreach (var destination in manifest.Transformation.Notifications)
+                {
+                    // Remove requested destinations from existing list to end up with delete delta
+                    if (existingDestinations.RemoveAll(n => (n.Destination == destination)) == 0)
+                    {
+                        // Remove returns 0 -> doesn't exist, so create it
+                        toCreate.Add(destination);
+                    }
+
+                }
+            }
+
+            // The remaining entries in existing is now only those not included in the new manifest, delete them
+            foreach (var destination in existingDestinations)
+            {
+                toDelete.Add(destination);
+            }
+
+            Console.WriteLine($"Creating {toCreate.Count} and removing {toDelete.Count} notification destinations");
+
+            foreach (var destination in toCreate)
+            {
+                await client.NotificationCreate(id, destination);
+            }
+            foreach (var destination in toDelete)
+            {
+                await client.NotificationDelete(id, destination.Id);
             }
         }
 

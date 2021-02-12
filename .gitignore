@@ -361,3 +361,6 @@ FodyWeavers.xsd
 
 .metals/
 .vscode/
+
+# Files for testing locally
+local_testing

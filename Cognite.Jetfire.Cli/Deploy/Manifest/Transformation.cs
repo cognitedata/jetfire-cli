@@ -22,5 +22,7 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
         public ApiKeys ApiKey { get; set; }
 
         public string Query { get; set; }
+
+        public string[] Notifications { get; set; }
     }
 }
