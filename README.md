@@ -109,6 +109,13 @@ destination:
 action: update
 
 
+# Optional, default: null
+# List of email adresses to send emails to on transformation errors
+notifications:
+  - my.email@provider.com
+  ...
+
+
 # Required
 # The API key that will be used to run the transformation,
 # specified as the name of an environment variable.

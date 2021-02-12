@@ -54,6 +54,7 @@ namespace Cognite.Jetfire.Cli.Show
         async Task ShowTransform(string cluster, int? id, string externalId)
         {
             TransformConfigRead transform;
+            NotificationRead[] notifications;
 
             using (var client = JetfireClientFactory.CreateClient(Secrets, cluster))
             {
@@ -70,7 +71,10 @@ namespace Cognite.Jetfire.Cli.Show
                 {
                     throw new JetfireCliException("Either --id or --external-id must be specified");
                 }
+
+                notifications = await client.NotificationList(transform.Id);
             }
+
 
             Console.WriteLine($"Name:           {transform.Name}");
             Console.WriteLine($"ID:             {transform.Id}");
@@ -87,6 +91,12 @@ namespace Cognite.Jetfire.Cli.Show
             }
             Console.WriteLine($"Action:         {transform.ConflictMode}");
             Console.WriteLine($"Schedule:       {transform?.Schedule?.ToString()?.ToLower() ?? "no schedule"}");
+
+            Console.WriteLine($"Notifications:  {(notifications.Length == 0 ? "no destinations" : "")}");
+            foreach (var notification in notifications)
+            {
+                Console.WriteLine($"   {notification.Destination}");
+            }
 
             Console.WriteLine();
             Console.WriteLine("".PadLeft(50, '-'));

@@ -63,6 +63,12 @@ namespace Cognite.Jetfire.Api
         Task ScheduleCreateOrUpdate(int id, ScheduleParams request, CancellationToken ct = default);
 
         Task ScheduleDelete(int id, CancellationToken ct = default);
+
+        Task NotificationCreate(int configId, string destination, CancellationToken ct = default);
+
+        Task<NotificationRead[]> NotificationList(int configId, CancellationToken ct = default);
+
+        Task NotificationDelete(int configId, int notificationId, CancellationToken ct = default);
     }
 
     public static class JetfireClientExtensions
@@ -104,7 +110,7 @@ namespace Cognite.Jetfire.Api
     public class JetfireClient : JetfireBaseClient, IJetfireClient
     {
         public JetfireClient(Uri baseUri, ICredentials credentials)
-            : base (baseUri, credentials)
+            : base(baseUri, credentials)
         {
         }
 
@@ -159,6 +165,15 @@ namespace Cognite.Jetfire.Api
         public Task ScheduleDelete(int id, CancellationToken ct = default)
             => SendAsync(HttpMethod.Delete, $"/api/schedule/config/{id}", ct);
 
+        public Task NotificationCreate(int configId, string destination, CancellationToken ct = default)
+            => SendAsync(HttpMethod.Post, $"/api/transform/config/{configId}/notifications", new NotificationCreate(destination), ct);
+
+        public Task<NotificationRead[]> NotificationList(int configId, CancellationToken ct = default)
+            => SendAsync<NotificationRead[]>(HttpMethod.Get, $"/api/transform/config/{configId}/notifications", ct);
+
+        public Task NotificationDelete(int configId, int notificationId, CancellationToken ct = default)
+            => SendAsync(HttpMethod.Delete, $"/api/transform/config/{configId}/notifications/{notificationId}", ct);
+
         public Task<QueryResponse> Query(
             QueryRequest request,
             long? resultsLimit = null,
@@ -187,7 +202,7 @@ namespace Cognite.Jetfire.Api
 
         static string MakeQueryString(IEnumerable<KeyValuePair<string, string>> items)
         {
-            using(var content = new FormUrlEncodedContent(items))
+            using (var content = new FormUrlEncodedContent(items))
             {
                 return content.ReadAsStringAsync().Result;
             }
