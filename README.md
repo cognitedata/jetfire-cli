@@ -2,6 +2,19 @@
 
 Command-line interface for Jetfire/Transformations.
 
+
+## Changes between v1 and v2
+
+v2 introduces the possibility to configure email notifications via transformation manifests.
+This means that if you run `jetfire deploy` on your old v1 manifests, version 2 will delete all the notification destinations you have configured in the web app, unless you include a `notifications` section in the manifest file like so:
+
+``` yaml
+notifications:
+  - alice@gmail.com
+  - bob@outlook.com
+```
+
+
 ## Usage
 
 ### Authenticate
@@ -42,7 +55,7 @@ To deploy a set of transformations in a GitHub workflow, add a step which refere
 
 ```yaml
 - name: Deploy transformations
-  uses: cognitedata/jetfire-cli@v1
+  uses: cognitedata/jetfire-cli@v2
   with:
     path: transformations
     api-key: ${{ secrets.JETFIRE_API_KEY }}
