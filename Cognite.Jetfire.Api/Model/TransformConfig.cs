@@ -43,6 +43,23 @@ namespace Cognite.Jetfire.Api.Model
         public string SourceApiKey { get; set; }
 
         public string DestinationApiKey { get; set; }
+
+        public FlatOidcCredentials SourceOidcCredentials { get; set; }
+
+        public FlatOidcCredentials DestinationOidcCredentials { get; set; }
+    }
+
+    public class FlatOidcCredentials
+    {
+        public string ClientId { get; set; }
+
+        public string ClientSecret { get; set; }
+
+        public string Scopes { get; set; }
+
+        public string TokenUrl { get; set; }
+
+        public string CdfProjectName { get; set; }
     }
 
     public class TransformConfigPublishOptions
@@ -73,7 +90,7 @@ namespace Cognite.Jetfire.Api.Model
 
     public class DataSource
     {
-        public DataSource() {}
+        public DataSource() { }
 
         public DataSource(string type)
         {

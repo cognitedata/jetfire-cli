@@ -21,6 +21,8 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
 
         public ApiKeys ApiKey { get; set; }
 
+        public ReadWriteOidcCredentials Authentication { get; set; }
+
         public string Query { get; set; }
 
         public string[] Notifications { get; set; }

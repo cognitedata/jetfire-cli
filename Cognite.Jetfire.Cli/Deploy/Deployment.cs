@@ -76,7 +76,9 @@ namespace Cognite.Jetfire.Cli.Deploy
                 ConflictMode = ToConflictModeString(manifest.Transformation.Action),
                 SourceApiKey = manifest.ReadApiKey,
                 DestinationApiKey = manifest.WriteApiKey,
-            });
+                SourceOidcCredentials = manifest.ReadCredentials,
+                DestinationOidcCredentials = manifest.WriteCredentials
+            }); ;
         }
 
         async Task Update(TransformConfigRead transformToUpdate, ResolvedManifest manifest)
