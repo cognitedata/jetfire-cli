@@ -51,7 +51,7 @@ namespace Cognite.Jetfire.Cli
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"Unhandled error: {e.Message}. ");
+                Console.Error.WriteLine($"Unhandled {e.GetType()}: {e.Message}");
                 Console.Error.WriteLine(e.StackTrace);
                 return 1;
             }

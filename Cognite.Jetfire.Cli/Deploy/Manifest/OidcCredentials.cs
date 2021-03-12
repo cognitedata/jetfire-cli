@@ -8,31 +8,34 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
         public string[] Scopes { get; set; }
-        public string TokenUri { get; set; }
+        public string TokenUrl { get; set; }
         public string CdfProjectName { get; set; }
     }
 
     public class ReadWriteOidcCredentials : OidcCredentials
     {
+        private OidcCredentials read;
         public OidcCredentials Read
         {
             get
             {
-                if (Read == null)
-                    return this;
-                return Read;
+                if (this.read != null)
+                    return this.read;
+                return this;
             }
-            set { Read = value; }
+            set { this.read = value; }
         }
+
+        private OidcCredentials write;
         public OidcCredentials Write
         {
             get
             {
-                if (Write == null)
-                    return this;
-                return Write;
+                if (this.write != null)
+                    return this.write;
+                return this;
             }
-            set { Write = value; }
+            set { this.write = value; }
         }
     }
 }

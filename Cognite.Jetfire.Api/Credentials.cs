@@ -33,22 +33,20 @@ namespace Cognite.Jetfire.Api
 
     public sealed class TokenCredentials : ICredentials
     {
-        public string ClientId { get; set; }
-        public string Secret { get; set; }
-        public List<string> Scopes { get; set; }
-        public string Authority { get; set; }
-
+        private string Project;
         private IAuthenticator Authenticator;
 
-        public TokenCredentials(AuthenticatorConfig authenticatorConfig)
+        public TokenCredentials(AuthenticatorConfig authenticatorConfig, string project)
         {
             Authenticator = new Authenticator(authenticatorConfig, new HttpClient(), NullLogger<IAuthenticator>.Instance);
+            Project = project;
         }
 
         public async Task ApplyAsync(HttpRequestMessage request)
         {
             var token = await Authenticator.GetToken();
-            request.Headers.Add("Authorization", $"Bearer ${token}");
+            request.Headers.Add("Authorization", $"Bearer {token}");
+            request.Headers.Add("project", Project);
         }
     }
 }

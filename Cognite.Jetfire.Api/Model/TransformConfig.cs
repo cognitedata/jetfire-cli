@@ -57,7 +57,7 @@ namespace Cognite.Jetfire.Api.Model
 
         public string Scopes { get; set; }
 
-        public string TokenUrl { get; set; }
+        public string TokenUri { get; set; }
 
         public string CdfProjectName { get; set; }
     }

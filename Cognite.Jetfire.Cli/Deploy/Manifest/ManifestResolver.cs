@@ -77,7 +77,7 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
                         CdfProjectName = manifest.Authentication.Read.CdfProjectName,
                         ClientId = GetSecret(manifest.Authentication.Read.ClientId, result),
                         ClientSecret = GetSecret(manifest.Authentication.Read.ClientSecret, result),
-                        TokenUrl = manifest.Authentication.Read.TokenUri,
+                        TokenUri = manifest.Authentication.Read.TokenUrl,
                         Scopes = string.Join(" ", manifest.Authentication.Read.Scopes)
                     };
                     resolvedManifest.WriteCredentials = new FlatOidcCredentials
@@ -85,7 +85,7 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
                         CdfProjectName = manifest.Authentication.Write.CdfProjectName,
                         ClientId = GetSecret(manifest.Authentication.Write.ClientId, result),
                         ClientSecret = GetSecret(manifest.Authentication.Write.ClientSecret, result),
-                        TokenUrl = manifest.Authentication.Write.TokenUri,
+                        TokenUri = manifest.Authentication.Write.TokenUrl,
                         Scopes = string.Join(" ", manifest.Authentication.Write.Scopes)
                     };
                 }

@@ -16,6 +16,7 @@ namespace Cognite.Jetfire.Cli
         static readonly string ClientIdEnvironmentVariable = "JETFIRE_CLIENT_ID";
         static readonly string ClientSecretEnvironmentVariable = "JETFIRE_CLIENT_SECRET";
         static readonly string TokenScopesEnvironmentVariable = "JETFIRE_TOKEN_SCOPES";
+        static readonly string ProjectEnvironmentVariable = "JETFIRE_PROJECT";
 
         public static IJetfireClient CreateClient(ISecretsProvider secrets, string cluster)
         {
@@ -32,12 +33,13 @@ namespace Cognite.Jetfire.Cli
             var clientId = secrets.GetNamedSecret(ClientIdEnvironmentVariable);
             var clientSecret = secrets.GetNamedSecret(ClientSecretEnvironmentVariable);
             var tokenScopes = secrets.GetNamedSecret(TokenScopesEnvironmentVariable);
+            var project = secrets.GetNamedSecret(ProjectEnvironmentVariable);
 
             if (!string.IsNullOrWhiteSpace(apiKey))
             {
                 return new ApiKeyCredentials(apiKey);
             }
-            else if (!string.IsNullOrEmpty(tokenUrl) && !string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientSecret) && !string.IsNullOrEmpty(tokenScopes))
+            else if (!string.IsNullOrEmpty(tokenUrl) && !string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientSecret) && !string.IsNullOrEmpty(tokenScopes) && !string.IsNullOrEmpty(project))
             {
                 var authConfig = new AuthenticatorConfig
                 {
@@ -47,17 +49,21 @@ namespace Cognite.Jetfire.Cli
                     TokenUrl = tokenUrl,
                     Scopes = new List<string>(tokenScopes.Split(","))
                 };
-                return new TokenCredentials(authConfig);
+                return new TokenCredentials(authConfig, project);
             }
             else
             {
-                throw new JetfireCliException($"Either the {ApiKeyEnvironmentVariable} environment variable, or the {TokenUrlEnvironmentVariable}, {ClientIdEnvironmentVariable}, {ClientSecretEnvironmentVariable} and {TokenScopesEnvironmentVariable} environment variables must be set");
+                throw new JetfireCliException($"Either the {ApiKeyEnvironmentVariable} environment variable, or the {TokenUrlEnvironmentVariable}, {ClientIdEnvironmentVariable}, {ClientSecretEnvironmentVariable}, {TokenScopesEnvironmentVariable} and {ProjectEnvironmentVariable} environment variables must be set");
             }
 
         }
 
         static Uri GetBaseUriFromCluster(string cluster)
         {
+            if (cluster == "localhost")
+            {
+                return new Uri("http://localhost:8084");
+            }
             cluster = cluster ?? "europe-west1-1";
             return new Uri($"https://jetfire.{cluster}.cogniteapp.com");
         }
