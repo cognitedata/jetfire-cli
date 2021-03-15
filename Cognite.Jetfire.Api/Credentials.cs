@@ -25,10 +25,12 @@ namespace Cognite.Jetfire.Api
             ApiKey = apiKey;
         }
 
+#pragma warning disable CS1998 // Need async to comply with interface
         public async Task ApplyAsync(HttpRequestMessage request)
         {
             request.Headers.Add("api-key", ApiKey);
         }
+#pragma warning restore CS1998
     }
 
     public sealed class TokenCredentials : ICredentials
