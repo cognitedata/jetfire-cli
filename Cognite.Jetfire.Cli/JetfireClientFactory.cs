@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using Cognite.Extractor.Common;
 using Cognite.Extractor.Configuration;
 using Cognite.Extractor.Utils;
 using Cognite.Jetfire.Api;
@@ -27,19 +28,19 @@ namespace Cognite.Jetfire.Cli
 
         static ICredentials GetCredentials(ISecretsProvider secrets)
         {
-            var apiKey = secrets.GetNamedSecret(ApiKeyEnvironmentVariable);
+            var apiKey = secrets.GetNamedSecret(ApiKeyEnvironmentVariable).TrimToNull();
 
-            var tokenUrl = secrets.GetNamedSecret(TokenUrlEnvironmentVariable);
-            var clientId = secrets.GetNamedSecret(ClientIdEnvironmentVariable);
-            var clientSecret = secrets.GetNamedSecret(ClientSecretEnvironmentVariable);
-            var tokenScopes = secrets.GetNamedSecret(TokenScopesEnvironmentVariable);
-            var project = secrets.GetNamedSecret(ProjectEnvironmentVariable);
+            var tokenUrl = secrets.GetNamedSecret(TokenUrlEnvironmentVariable).TrimToNull();
+            var clientId = secrets.GetNamedSecret(ClientIdEnvironmentVariable).TrimToNull();
+            var clientSecret = secrets.GetNamedSecret(ClientSecretEnvironmentVariable).TrimToNull();
+            var tokenScopes = secrets.GetNamedSecret(TokenScopesEnvironmentVariable).TrimToNull();
+            var project = secrets.GetNamedSecret(ProjectEnvironmentVariable).TrimToNull();
 
-            if (!string.IsNullOrWhiteSpace(apiKey))
+            if (apiKey != null)
             {
                 return new ApiKeyCredentials(apiKey);
             }
-            else if (!string.IsNullOrEmpty(tokenUrl) && !string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientSecret) && !string.IsNullOrEmpty(tokenScopes) && !string.IsNullOrEmpty(project))
+            else if (tokenUrl != null && clientId != null && clientSecret != null && tokenScopes != null && project != null)
             {
                 var authConfig = new AuthenticatorConfig
                 {
