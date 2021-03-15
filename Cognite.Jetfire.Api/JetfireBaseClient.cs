@@ -71,7 +71,7 @@ namespace Cognite.Jetfire.Api
 
         public async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct = default)
         {
-            Credentials.Apply(request);
+            await Credentials.ApplyAsync(request);
 
             var response = await Http.SendAsync(request, ct);
 
@@ -83,7 +83,7 @@ namespace Cognite.Jetfire.Api
                     var body = await response.Content.ReadAsStringAsync();
                     error = JsonSerializer.Deserialize<JetfireApiError>(body, JsonConfig.SerializerOptions);
                 }
-                catch (Exception) {}
+                catch (Exception) { }
 
                 throw new JetfireApiException(
                     response.StatusCode,

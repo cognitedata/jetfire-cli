@@ -17,6 +17,10 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
 
         public string WriteApiKey { get; set; }
 
+        public FlatOidcCredentials ReadCredentials { get; set; }
+
+        public FlatOidcCredentials WriteCredentials { get; set; }
+
         public string Query { get; set; }
     }
 
@@ -61,14 +65,33 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
 
             try
             {
-                if (manifest.ApiKey == null)
-                {
-                    result.ReportError("API keys are not defined");
-                }
-                else
+                if (manifest.ApiKey != null)
                 {
                     resolvedManifest.ReadApiKey = GetSecret(manifest.ApiKey.Read, result);
                     resolvedManifest.WriteApiKey = GetSecret(manifest.ApiKey.Write, result);
+                }
+                else if (manifest.Authentication != null)
+                {
+                    resolvedManifest.ReadCredentials = new FlatOidcCredentials
+                    {
+                        CdfProjectName = manifest.Authentication.Read.CdfProjectName,
+                        ClientId = GetSecret(manifest.Authentication.Read.ClientId, result),
+                        ClientSecret = GetSecret(manifest.Authentication.Read.ClientSecret, result),
+                        TokenUri = manifest.Authentication.Read.TokenUrl,
+                        Scopes = string.Join(" ", manifest.Authentication.Read.Scopes)
+                    };
+                    resolvedManifest.WriteCredentials = new FlatOidcCredentials
+                    {
+                        CdfProjectName = manifest.Authentication.Write.CdfProjectName,
+                        ClientId = GetSecret(manifest.Authentication.Write.ClientId, result),
+                        ClientSecret = GetSecret(manifest.Authentication.Write.ClientSecret, result),
+                        TokenUri = manifest.Authentication.Write.TokenUrl,
+                        Scopes = string.Join(" ", manifest.Authentication.Write.Scopes)
+                    };
+                }
+                else
+                {
+                    result.ReportError("Missing credentials (either apiKey or authentication must be set)");
                 }
 
                 var destination = manifest.Destination;
