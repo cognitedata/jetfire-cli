@@ -48,6 +48,18 @@ namespace Cognite.Jetfire.Api
             CancellationToken ct = default
         );
 
+        Task TransformConfigUpdateSourceCredentials(
+            int id,
+            FlatOidcCredentials request,
+            CancellationToken ct = default
+        );
+
+        Task TransformConfigUpdateDestinationCredentials(
+            int id,
+            FlatOidcCredentials request,
+            CancellationToken ct = default
+        );
+
         Task TransformConfigSetPublished(
             int id,
             TransformConfigPublishOptions request,
@@ -143,6 +155,18 @@ namespace Cognite.Jetfire.Api
             TransformConfigApiKeyUpdate request,
             CancellationToken ct = default
         ) => SendAsync(HttpMethod.Post, $"/api/transform/config/{id}/destinationApiKey", request, ct);
+
+        public Task TransformConfigUpdateSourceCredentials(
+            int id,
+            FlatOidcCredentials request,
+            CancellationToken ct = default
+        ) => SendAsync(HttpMethod.Post, $"/api/transform/config/{id}/sourceOidcCredentials", request, ct);
+
+        public Task TransformConfigUpdateDestinationCredentials(
+            int id,
+            FlatOidcCredentials request,
+            CancellationToken ct = default
+        ) => SendAsync(HttpMethod.Post, $"/api/transform/config/{id}/destinationOidcCredentials", request, ct);
 
         public Task TransformConfigSetPublished(
             int id,
