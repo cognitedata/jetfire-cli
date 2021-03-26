@@ -129,7 +129,7 @@ notifications:
   ...
 
 
-# Required
+# Either this or authentication is required
 # The API key that will be used to run the transformation,
 # specified as the name of an environment variable.
 apiKey: SOME_ENVIRONMENT_VARIABLE
@@ -137,6 +137,36 @@ apiKey: SOME_ENVIRONMENT_VARIABLE
 apiKey:
   read: READ_API_KEY
   write: WRITE_API_KEY
+
+
+# Either this or apiKey is required
+# The client credentials to be used in the transformation
+authentication:
+  tokenUrl: "https://my-idp.com/oauth2/token"
+  scopes:
+    - https://bluefield.cognitedata.com/.default
+  cdfProjectName: my-project
+  # The following two is given as the name of an environment variable
+  clientId: COGNITE_CLIENT_ID
+  clientSecret: COGNITE_CLIENT_SECRET
+# Alternatively, if you want to use separate credentials for read and write:
+authentication:
+  read:
+    tokenUrl: "https://my-idp.com/oauth2/token"
+    scopes:
+      - https://bluefield.cognitedata.com/.default
+    cdfProjectName: my-project
+    # The following two is given as the name of an environment variable
+    clientId: COGNITE_CLIENT_ID
+    clientSecret: COGNITE_CLIENT_SECRET
+  write:
+    tokenUrl: "https://my-idp.com/oauth2/token"
+    scopes:
+      - https://bluefield.cognitedata.com/.default
+    cdfProjectName: another-project
+    # The following two is given as the name of an environment variable
+    clientId: COGNITE_CLIENT_ID
+    clientSecret: COGNITE_CLIENT_SECRET
 ```
 
 ### Start a transformation job

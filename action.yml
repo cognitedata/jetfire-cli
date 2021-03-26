@@ -3,7 +3,22 @@ description: 'Deploy a set of transformations to Jetfire from yaml manifests'
 inputs:
   api-key:
     description: 'API key for authenticating with Jetfire'
-    required: true
+    required: false
+  token-url:
+    description: 'Token url to use for fetching OIDC tokens'
+    required: false
+  project-name:
+    description: 'CDF project name (only required when using OIDC credentials)'
+    required: false
+  scopes:
+    description: 'List of OIDC scopes (whitespace separated)'
+    required: false
+  client-id:
+    description: 'OAuth2 client ID'
+    required: false
+  client-secret:
+    description: 'OAuth2 client secret'
+    required: false
   cluster:
     description: 'CDF Cluster'
     required: false
@@ -19,4 +34,9 @@ runs:
   image: 'Dockerfile'
   env:
     JETFIRE_API_KEY: ${{ inputs.api-key }}
+    JETFIRE_TOKEN_URL: ${{ inputs.token-url }}
+    JETFIRE_PROJECT: ${{ inputs.project-name }}
+    JETFIRE_CLIENT_ID: ${{ inputs.client-id }}
+    JETFIRE_CLIENT_SECRET: ${{ inputs.client-secret }}
+    JETFIRE_TOKEN_SCOPES: ${{ inputs.scopes }}
   args: ["--cluster", "${{ inputs.cluster }}", "deploy", "${{ inputs.path }}" ]
