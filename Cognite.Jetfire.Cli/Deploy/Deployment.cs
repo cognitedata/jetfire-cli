@@ -92,8 +92,14 @@ namespace Cognite.Jetfire.Cli.Deploy
                 ConflictMode = ToConflictModeString(manifest.Transformation.Action),
             });
 
-            await client.TransformConfigUpdateSourceApiKey(id, manifest.ReadApiKey);
-            await client.TransformConfigUpdateDestinationApiKey(id, manifest.WriteApiKey);
+            if (manifest.ReadApiKey != null)
+                await client.TransformConfigUpdateSourceApiKey(id, manifest.ReadApiKey);
+            if (manifest.WriteApiKey != null)
+                await client.TransformConfigUpdateDestinationApiKey(id, manifest.WriteApiKey);
+            if (manifest.ReadCredentials != null)
+                await client.TransformConfigUpdateSourceCredentials(id, manifest.ReadCredentials);
+            if (manifest.WriteCredentials != null)
+                await client.TransformConfigUpdateDestinationCredentials(id, manifest.WriteCredentials);
 
             if (transformToUpdate.IsPublic != manifest.Transformation.Shared)
             {
