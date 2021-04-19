@@ -36,7 +36,7 @@ namespace Cognite.Jetfire.Cli.Jobs
             {
 
                 int configId = await Utils.ResolveEitherId(id, externalId, client);
-                var jobs = await client.TransformConfigRecentJobs(configId, new CancellationToken());
+                var jobs = await client.TransformConfigRecentJobs(configId);
 
                 int idLength = 36;
                 int dateLength = 19;

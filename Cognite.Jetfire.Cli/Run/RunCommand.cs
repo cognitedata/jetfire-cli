@@ -139,7 +139,7 @@ namespace Cognite.Jetfire.Cli.Run
             CancellationToken cancellationToken
         )
         {
-            var jobs = await client.TransformConfigRecentJobs(configId, cancellationToken);
+            var jobs = await client.TransformConfigRecentJobs(configId, 1000, cancellationToken);
             var firstJob = jobs.First();
             var watchingJob = jobs.Single(x => x.Uuid == jobUuid);
 

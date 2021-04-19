@@ -37,29 +37,33 @@ namespace Cognite.Jetfire.Cli.ListTransforms
                 var ExternalIdLength = 11;
                 var NameLength = 4;
                 var ScheduleLength = 8;
+                var LastRunLength = 7;
 
                 // Calculate col width
-                List<Tuple<string, string, string, string>> rows = new List<Tuple<string, string, string, string>>();
+                List<Tuple<string, string, string, string, string>> rows = new List<Tuple<string, string, string, string, string>>();
                 foreach (var transformConfig in list)
                 {
                     var id = transformConfig.Id.ToString();
                     var extid = transformConfig.ExternalId ?? "";
                     var name = transformConfig.Name;
                     var sched = transformConfig?.Schedule?.ToString() ?? "";
+                    var fullLastRun = await client.TransformConfigRecentJobs(transformConfig.Id, 1);
+                    var lastRun = fullLastRun.Length > 0 ? fullLastRun[0].Status() : "";
 
                     IdLength = Math.Max(IdLength, id.Length);
                     ExternalIdLength = Math.Max(ExternalIdLength, extid.Length);
                     NameLength = Math.Max(NameLength, name.Length);
                     ScheduleLength = Math.Max(ScheduleLength, sched.Length);
+                    LastRunLength = Math.Max(LastRunLength, lastRun.Length);
 
-                    rows.Add(Tuple.Create(id, extid, name, sched));
+                    rows.Add(Tuple.Create(id, extid, name, sched, lastRun));
                 }
 
                 // Print table
-                Console.WriteLine($"{"ID".PadRight(IdLength)}  {"EXTERNAL ID".PadRight(ExternalIdLength)}  {"NAME".PadRight(NameLength)}  {"SCHEDULE".PadRight(ScheduleLength)}");
+                Console.WriteLine($"{"ID".PadRight(IdLength)}  {"EXTERNAL ID".PadRight(ExternalIdLength)}  {"NAME".PadRight(NameLength)}  {"SCHEDULE".PadRight(ScheduleLength)}  {"LAST RUN".PadRight(LastRunLength)}");
                 foreach (var row in rows)
                 {
-                    Console.WriteLine($"{row.Item1.PadRight(IdLength)}  {row.Item2.PadRight(ExternalIdLength)}  {row.Item3.PadRight(NameLength)}  {row.Item4.PadRight(ScheduleLength)}");
+                    Console.WriteLine($"{row.Item1.PadRight(IdLength)}  {row.Item2.PadRight(ExternalIdLength)}  {row.Item3.PadRight(NameLength)}  {row.Item4.PadRight(ScheduleLength)}  {row.Item5.PadRight(LastRunLength)}");
                 }
             }
         }

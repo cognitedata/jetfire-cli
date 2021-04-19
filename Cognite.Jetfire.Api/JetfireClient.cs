@@ -68,7 +68,7 @@ namespace Cognite.Jetfire.Api
 
         Task<TransformJobId> TransformConfigStartJob(int id, CancellationToken ct = default);
 
-        Task<TransformJob[]> TransformConfigRecentJobs(int id, CancellationToken ct = default);
+        Task<TransformJob[]> TransformConfigRecentJobs(int id, int limit = 1000, CancellationToken ct = default);
 
         Task<MetricCounter[]> TransformJobMetrics(string jobId, CancellationToken ct = default);
 
@@ -177,8 +177,8 @@ namespace Cognite.Jetfire.Api
         public Task<TransformJobId> TransformConfigStartJob(int id, CancellationToken ct = default)
             => SendAsync<TransformJobId>(HttpMethod.Post, $"/api/transform/config/run/{id}", ct);
 
-        public Task<TransformJob[]> TransformConfigRecentJobs(int id, CancellationToken ct = default)
-            => SendAsync<TransformJob[]>(HttpMethod.Get, $"/api/transform/jobDetails/{id}", ct);
+        public Task<TransformJob[]> TransformConfigRecentJobs(int id, int limit = 1000, CancellationToken ct = default)
+            => SendAsync<TransformJob[]>(HttpMethod.Get, $"/api/transform/jobDetails/{id}?={limit}", ct);
 
         public Task<MetricCounter[]> TransformJobMetrics(string jobId, CancellationToken ct = default)
             => SendAsync<MetricCounter[]>(HttpMethod.Get, $"/api/transform/jobs/{jobId}/metrics", ct);
