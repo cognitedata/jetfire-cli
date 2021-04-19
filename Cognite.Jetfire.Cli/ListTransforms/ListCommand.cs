@@ -29,6 +29,9 @@ namespace Cognite.Jetfire.Cli.ListTransforms
             {
                 var list = await client.TransformConfigList(new System.Threading.CancellationToken());
 
+                // Sort on ID descending (and thus created at time)
+                list.Sort((x, y) => x.Id.CompareTo(y.Id));
+
                 // Width of columns (initialized with length of col title)
                 var IdLength = 2;
                 var ExternalIdLength = 11;
