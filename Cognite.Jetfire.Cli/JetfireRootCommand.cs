@@ -19,8 +19,7 @@ namespace Cognite.Jetfire.Cli
             {
                 new Option<string>(
                     alias: "--cluster",
-                    description: "The CDF cluster where Jetfire is hosted (e.g. greenfield, europe-west1-1)",
-                    getDefaultValue: () => "europe-west1-1"
+                    description: "The CDF cluster where Jetfire is hosted (e.g. greenfield, europe-west1-1)"
                 )
             };
 

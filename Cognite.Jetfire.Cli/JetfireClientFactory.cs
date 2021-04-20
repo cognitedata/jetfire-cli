@@ -18,10 +18,11 @@ namespace Cognite.Jetfire.Cli
         static readonly string ClientSecretEnvironmentVariable = "JETFIRE_CLIENT_SECRET";
         static readonly string TokenScopesEnvironmentVariable = "JETFIRE_TOKEN_SCOPES";
         static readonly string ProjectEnvironmentVariable = "JETFIRE_PROJECT";
+        static readonly string ClusterEnvironmentVariable = "JETFIRE_CLUSTER";
 
         public static IJetfireClient CreateClient(ISecretsProvider secrets, string cluster)
         {
-            var baseUri = GetBaseUriFromCluster(cluster);
+            var baseUri = GetBaseUriFromCluster(secrets, cluster);
             var credentials = GetCredentials(secrets);
             return new JetfireClient(baseUri, credentials);
         }
@@ -59,13 +60,16 @@ namespace Cognite.Jetfire.Cli
 
         }
 
-        static Uri GetBaseUriFromCluster(string cluster)
+        static Uri GetBaseUriFromCluster(ISecretsProvider secrets, string cluster)
         {
             if (cluster == "localhost")
             {
                 return new Uri("http://localhost:8084");
             }
-            cluster = cluster ?? "europe-west1-1";
+            if (string.IsNullOrWhiteSpace(cluster))
+            {
+                cluster = secrets.GetNamedSecret(ClusterEnvironmentVariable) ?? "europe-west1-1";
+            }
             return new Uri($"https://jetfire.{cluster}.cogniteapp.com");
         }
     }
