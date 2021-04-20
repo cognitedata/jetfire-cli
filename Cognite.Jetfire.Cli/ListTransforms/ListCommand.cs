@@ -56,7 +56,7 @@ namespace Cognite.Jetfire.Cli.ListTransforms
                     ScheduleLength = Math.Max(ScheduleLength, sched.Length);
                     LastRunLength = Math.Max(LastRunLength, lastRun.Length);
 
-                    rows.Add(Tuple.Create(id, extid, name, sched, lastRun));
+                    rows.Add((id, extid, name, sched, lastRun));
                 }
 
                 // Print table
