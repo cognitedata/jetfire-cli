@@ -40,7 +40,7 @@ namespace Cognite.Jetfire.Cli.ListTransforms
                 var LastRunLength = 7;
 
                 // Calculate col width
-                List<Tuple<string, string, string, string, string>> rows = new List<Tuple<string, string, string, string, string>>();
+                var rows = new List<(string id, string extid, string name, string sched, string lastRun)>();
                 foreach (var transformConfig in list)
                 {
                     var id = transformConfig.Id.ToString();
