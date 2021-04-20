@@ -63,7 +63,7 @@ namespace Cognite.Jetfire.Cli.ListTransforms
                 Console.WriteLine($"{"ID".PadRight(IdLength)}  {"EXTERNAL ID".PadRight(ExternalIdLength)}  {"NAME".PadRight(NameLength)}  {"SCHEDULE".PadRight(ScheduleLength)}  {"LAST RUN".PadRight(LastRunLength)}");
                 foreach (var row in rows)
                 {
-                    Console.WriteLine($"{row.id.PadRight(IdLength)}  {row.etxid.PadRight(ExternalIdLength)}  {row.name.PadRight(NameLength)}  {row.sched.PadRight(ScheduleLength)}  {row.lastRun.PadRight(LastRunLength)}");
+                    Console.WriteLine($"{row.id.PadRight(IdLength)}  {row.extid.PadRight(ExternalIdLength)}  {row.name.PadRight(NameLength)}  {row.sched.PadRight(ScheduleLength)}  {row.lastRun.PadRight(LastRunLength)}");
                 }
             }
         }
