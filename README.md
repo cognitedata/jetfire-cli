@@ -19,7 +19,7 @@ notifications:
 
 ### Authenticate
 
-To use `jetfire-cli`, the `JETFIRE_API_KEY` environment variable must be set to a valid API key for a service account which has access to Jetfire/Transformations. Alternatively, when using OIDC, you need to set the properties `JETFIRE_CLIENT_ID`, `JETFIRE_CLIENT_SECRET`, `JETFIRE_TOKEN_SCOPES` and `JETFIRE_TOKEN_URL`.
+To use `jetfire-cli`, the `JETFIRE_API_KEY` environment variable must be set to a valid API key for a service account which has access to Jetfire/Transformations. Alternatively, when using OIDC, you need to set the environment variables `JETFIRE_PROJECT`, `JETFIRE_CLIENT_ID`, `JETFIRE_CLIENT_SECRET`, `JETFIRE_TOKEN_SCOPES` and `JETFIRE_TOKEN_URL` instead.
 
 By default, `jetfire-cli` runs against the main CDF cluster (europe-west1-1).
 To use a different cluster, specify the `--cluster` parameter or set the environment variable `JETFIRE_CLUSTER`. Note that this is a global parameter, which must be specified before the subcommand.
