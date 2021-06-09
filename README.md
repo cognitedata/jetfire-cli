@@ -87,7 +87,7 @@ Alternatively when using OIDC, the action needs the client details instead of `a
       COGNITE_PROJECT: my-cognite-project
       TOKEN_URL: https://login.microsoftonline.com/<my-azure-tenant-id>/oauth2/v2.0/token
   with:
-      # Credentials used for deplyment
+      # Credentials used for deployment
       path: transformations
       client-id: my-jetfire-client-id
       client-secret: ${{ secrets.jetfire_client_secret] }}
