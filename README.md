@@ -19,10 +19,10 @@ notifications:
 
 ### Authenticate
 
-To use `jetfire-cli`, the `JETFIRE_API_KEY` environment variable must be set to a valid API key for a service account which has access to Jetfire/Transformations.
+To use `jetfire-cli`, the `JETFIRE_API_KEY` environment variable must be set to a valid API key for a service account which has access to Jetfire/Transformations. Alternatively, when using OIDC, you need to set the properties `JETFIRE_CLIENT_ID`, `JETFIRE_CLIENT_SECRET`, `JETFIRE_TOKEN_SCOPES` and `JETFIRE_TOKEN_URL`.
 
 By default, `jetfire-cli` runs against the main CDF cluster (europe-west1-1).
-To use a different cluster, specify the `--cluster` parameter. Note that this is a global parameter, which must be specified before the subcommand.
+To use a different cluster, specify the `--cluster` parameter or set the environment variable `JETFIRE_CLUSTER`. Note that this is a global parameter, which must be specified before the subcommand.
 For example:
 
 ```
@@ -74,6 +74,27 @@ This GitHub action takes the following inputs:
 | `cluster` | _(Optional)_ The name of the cluster where Jetfire/Transformations is hosted. |
 
 Additionally, you must specify environment variables for any API keys referenced in transformation manifests.
+
+Alternatively when using OIDC, the action needs the client details instead of `api-key`:
+```yaml
+- name: Deploy transformations
+  uses: cognitedata/jetfire-cli@v2
+  env:
+      # Credentials to be used when running your transformations,
+      # as referenced in your manifests:
+      COGNITE_CLIENT_ID: my-cognite-client-id
+      COGNITE_CLIENT_SECRET: ${{ secrets.cognite_client_secret }}
+      COGNITE_PROJECT: my-cognite-project
+      TOKEN_URL: https://login.microsoftonline.com/<my-azure-tenant-id>/oauth2/v2.0/token
+  with:
+      # Credentials used for deplyment
+      path: transformations
+      client-id: my-jetfire-client-id
+      client-secret: ${{ secrets.jetfire_client_secret] }}
+      token-url: https://login.microsoftonline.com/<my-azure-tenant-id>/oauth2/v2.0/token
+      scopes:
+          - https://<my-cluster>.cognitedata.com/.default
+```
 
 
 See [workflow.example.yml](workflow.example.yml) for a complete example.
