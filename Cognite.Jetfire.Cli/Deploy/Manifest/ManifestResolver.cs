@@ -75,11 +75,11 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
                     resolvedManifest.ReadCredentials = new FlatOidcCredentials
                     {
                         if(manifest.Authentication.Read.lookup) {
-                            CdfProjectName = GetSecret(manifest.Authentication.Read.CdfProjectName, result),
-                            TokenUri = GetSecret(manifest.Authentication.Read.TokenUrl, result),
+                            CdfProjectName = GetSecret(manifest.Authentication.Read.CdfProjectName, result);
+                            TokenUri = GetSecret(manifest.Authentication.Read.TokenUrl, result);
                         } else {
-                            CdfProjectName = manifest.Authentication.Read.CdfProjectName,
-                            TokenUri = manifest.Authentication.Read.TokenUrl,
+                            CdfProjectName = manifest.Authentication.Read.CdfProjectName;
+                            TokenUri = manifest.Authentication.Read.TokenUrl;
                         }
                         ClientId = GetSecret(manifest.Authentication.Read.ClientId, result),
                         ClientSecret = GetSecret(manifest.Authentication.Read.ClientSecret, result),
@@ -88,11 +88,11 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
                     resolvedManifest.WriteCredentials = new FlatOidcCredentials
                     {
                         if(manifest.Authentication.Write.lookup) {
-                            CdfProjectName = GetSecret(manifest.Authentication.Write.CdfProjectName, result),
-                            TokenUri = GetSecret(manifest.Authentication.Write.TokenUrl, result),
+                            CdfProjectName = GetSecret(manifest.Authentication.Write.CdfProjectName, result);
+                            TokenUri = GetSecret(manifest.Authentication.Write.TokenUrl, result);
                         } else {
-                            CdfProjectName = manifest.Authentication.Write.CdfProjectName,
-                            TokenUri = manifest.Authentication.Write.TokenUrl,
+                            CdfProjectName = manifest.Authentication.Write.CdfProjectName;
+                            TokenUri = manifest.Authentication.Write.TokenUrl;
                         }
                         ClientId = GetSecret(manifest.Authentication.Write.ClientId, result),
                         ClientSecret = GetSecret(manifest.Authentication.Write.ClientSecret, result),
