@@ -74,18 +74,28 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
                 {
                     resolvedManifest.ReadCredentials = new FlatOidcCredentials
                     {
-                        CdfProjectName = GetSecret(manifest.Authentication.Read.CdfProjectName, result),
+                        if(manifest.Authentication.Read.lookup) {
+                            CdfProjectName = GetSecret(manifest.Authentication.Read.CdfProjectName, result),
+                            TokenUri = GetSecret(manifest.Authentication.Read.TokenUrl, result),
+                        } else {
+                            CdfProjectName = manifest.Authentication.Read.CdfProjectName,
+                            TokenUri = manifest.Authentication.Read.TokenUrl,
+                        }
                         ClientId = GetSecret(manifest.Authentication.Read.ClientId, result),
                         ClientSecret = GetSecret(manifest.Authentication.Read.ClientSecret, result),
-                        TokenUri = GetSecret(manifest.Authentication.Read.TokenUrl, result),
                         Scopes = string.Join(" ", manifest.Authentication.Read.Scopes)
                     };
                     resolvedManifest.WriteCredentials = new FlatOidcCredentials
                     {
-                        CdfProjectName = manifest.Authentication.Write.CdfProjectName,
+                        if(manifest.Authentication.Write.lookup) {
+                            CdfProjectName = GetSecret(manifest.Authentication.Write.CdfProjectName, result),
+                            TokenUri = GetSecret(manifest.Authentication.Write.TokenUrl, result),
+                        } else {
+                            CdfProjectName = manifest.Authentication.Write.CdfProjectName,
+                            TokenUri = manifest.Authentication.Write.TokenUrl,
+                        }
                         ClientId = GetSecret(manifest.Authentication.Write.ClientId, result),
                         ClientSecret = GetSecret(manifest.Authentication.Write.ClientSecret, result),
-                        TokenUri = manifest.Authentication.Write.TokenUrl,
                         Scopes = string.Join(" ", manifest.Authentication.Write.Scopes)
                     };
                 }

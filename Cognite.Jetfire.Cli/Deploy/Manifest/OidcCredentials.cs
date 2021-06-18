@@ -10,6 +10,7 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
         public string[] Scopes { get; set; }
         public string TokenUrl { get; set; }
         public string CdfProjectName { get; set; }
+        public bool lookup { get; set; }
     }
 
     public class ReadWriteOidcCredentials : OidcCredentials
