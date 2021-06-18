@@ -60,6 +60,8 @@ namespace Cognite.Jetfire.Api.Model
         public string TokenUri { get; set; }
 
         public string CdfProjectName { get; set; }
+
+        public bool lookup { get; set; }
     }
 
     public class TransformConfigPublishOptions
