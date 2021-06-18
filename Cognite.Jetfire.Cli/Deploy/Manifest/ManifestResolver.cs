@@ -81,14 +81,6 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
                             ClientSecret = GetSecret(manifest.Authentication.Read.ClientSecret, result),
                             Scopes = string.Join(" ", manifest.Authentication.Read.Scopes)
                         };
-                        resolvedManifest.WriteCredentials = new FlatOidcCredentials
-                        {
-                            CdfProjectName = GetSecret(manifest.Authentication.Write.CdfProjectName, result),
-                            TokenUri = GetSecret(manifest.Authentication.Write.TokenUrl, result),
-                            ClientId = GetSecret(manifest.Authentication.Write.ClientId, result),
-                            ClientSecret = GetSecret(manifest.Authentication.Write.ClientSecret, result),
-                            Scopes = string.Join(" ", manifest.Authentication.Write.Scopes)
-                        };
                     } else {
                         resolvedManifest.ReadCredentials = new FlatOidcCredentials
                         {
@@ -98,6 +90,17 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
                             ClientSecret = GetSecret(manifest.Authentication.Read.ClientSecret, result),
                             Scopes = string.Join(" ", manifest.Authentication.Read.Scopes)
                         };
+                    }
+                    if (manifest.Authentication.Write.lookup) {
+                        resolvedManifest.WriteCredentials = new FlatOidcCredentials
+                        {
+                            CdfProjectName = GetSecret(manifest.Authentication.Write.CdfProjectName, result),
+                            TokenUri = GetSecret(manifest.Authentication.Write.TokenUrl, result),
+                            ClientId = GetSecret(manifest.Authentication.Write.ClientId, result),
+                            ClientSecret = GetSecret(manifest.Authentication.Write.ClientSecret, result),
+                            Scopes = string.Join(" ", manifest.Authentication.Write.Scopes)
+                        };
+                    } else {
                         resolvedManifest.WriteCredentials = new FlatOidcCredentials
                         {
                             CdfProjectName = manifest.Authentication.Write.CdfProjectName,
