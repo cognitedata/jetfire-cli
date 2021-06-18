@@ -165,8 +165,7 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
             var value = secrets.GetNamedSecret(name);
             if (value == null)
             {
-//                result.ReportError($"Could not find secret named '{name}'.");
-                return name;
+                result.ReportError($"Could not find secret named '{name}'.");
             }
             return value;
         }
