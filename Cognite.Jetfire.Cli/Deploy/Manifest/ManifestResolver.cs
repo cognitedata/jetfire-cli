@@ -74,10 +74,10 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
                 {
                     resolvedManifest.ReadCredentials = new FlatOidcCredentials
                     {
-                        CdfProjectName = manifest.Authentication.Read.CdfProjectName,
+                        CdfProjectName = GetSecret(manifest.Authentication.Read.CdfProjectName, result),
                         ClientId = GetSecret(manifest.Authentication.Read.ClientId, result),
                         ClientSecret = GetSecret(manifest.Authentication.Read.ClientSecret, result),
-                        TokenUri = manifest.Authentication.Read.TokenUrl,
+                        TokenUri = GetSecret(manifest.Authentication.Read.TokenUrl, result),
                         Scopes = string.Join(" ", manifest.Authentication.Read.Scopes)
                     };
                     resolvedManifest.WriteCredentials = new FlatOidcCredentials
@@ -155,7 +155,8 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
             var value = secrets.GetNamedSecret(name);
             if (value == null)
             {
-                result.ReportError($"Could not find secret named '{name}'.");
+//                result.ReportError($"Could not find secret named '{name}'.");
+                return name;
             }
             return value;
         }
