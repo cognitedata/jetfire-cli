@@ -113,6 +113,8 @@ name: My Transformation
 # Optional, default: false
 shared: true
 
+# Optional, default: true
+ignoreNullFields: true
 
 # Optional, default: null
 # If null, the transformation will not be scheduled.

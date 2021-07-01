@@ -70,6 +70,7 @@ namespace Cognite.Jetfire.Cli.Deploy
             {
                 ExternalId = manifest.Transformation.ExternalId,
                 IsPublic = manifest.Transformation.Shared,
+                IgnoreNullFields = manifest.Transformation.IgnoreNullFields,
                 Name = manifest.Transformation.Name,
                 Query = manifest.Query,
                 Destination = ToDataSource(manifest.Transformation.Destination),
@@ -104,6 +105,11 @@ namespace Cognite.Jetfire.Cli.Deploy
             if (transformToUpdate.IsPublic != manifest.Transformation.Shared)
             {
                 await client.TransformConfigSetPublished(id, manifest.Transformation.Shared);
+            }
+
+            if (transformToUpdate.ignoreNullFields != manifest.Transformation.IgnoreNullFields)
+            {
+                await client.TransformConfigSetIgnoreNullFields(id, manifest.Transformation.IgnoreNullFields);
             }
         }
 
