@@ -118,3 +118,32 @@ jobs:
         asset_path: assets/${{ steps.build_self_contained.outputs.asset_name }}.zip
         asset_name: ${{ steps.build_self_contained.outputs.asset_name }}.zip
         asset_content_type: application/zip
+
+  publish_to_dockerhub:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: "Checkout repository"
+      uses: actions/checkout@v2
+
+    - name: "Log in to the Container registry"
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USER }}
+        password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+
+    - id: parse_version
+      name: "Parse version from ref"
+      run: | # Returns the last component of the ref path, e.g. 'refs/tags/release/1.2.3-beta' -> '1.2.3-beta'
+        $version = split-path -leaf $env:GITHUB_REF
+        echo "::set-output name=version::$version"
+
+    - name: "Build and push Docker image"
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        file: ./Dockerfile
+        tags: cognite/jetfire-cli:${{ steps. parse_version.outputs.version }}
