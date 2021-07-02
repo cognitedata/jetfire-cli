@@ -24,6 +24,8 @@ namespace Cognite.Jetfire.Api.Model
         public ScheduleParams Schedule { get; set; }
 
         public bool IsPublic { get; set; }
+        public bool ignoreNullFields { get; set; }
+
     }
 
     public class TransformConfigCreate
@@ -39,6 +41,8 @@ namespace Cognite.Jetfire.Api.Model
         public string ConflictMode { get; set; }
 
         public bool IsPublic { get; set; }
+
+        public bool IgnoreNullFields { get; set; }
 
         public string SourceApiKey { get; set; }
 
@@ -65,6 +69,11 @@ namespace Cognite.Jetfire.Api.Model
     public class TransformConfigPublishOptions
     {
         public bool IsPublic { get; set; }
+    }
+
+    public class TransformConfigIgnoreNullFieldsOptions
+    {
+        public bool IgnoreNullFields { get; set; }
     }
 
     public class TransformConfigApiKeyUpdate

@@ -66,6 +66,12 @@ namespace Cognite.Jetfire.Api
             CancellationToken ct = default
         );
 
+         Task TransformConfigSetIgnoreNullFields(
+            int id,
+            TransformConfigIgnoreNullFieldsOptions request,
+            CancellationToken ct = default
+        );
+
         Task<TransformJobId> TransformConfigStartJob(int id, CancellationToken ct = default);
 
         Task<TransformJob[]> TransformConfigRecentJobs(int id, int limit = 1000, CancellationToken ct = default);
@@ -105,6 +111,13 @@ namespace Cognite.Jetfire.Api
             bool isPublic,
             CancellationToken ct = default
         ) => client.TransformConfigSetPublished(id, new TransformConfigPublishOptions { IsPublic = isPublic });
+
+        public static Task TransformConfigSetIgnoreNullFields(
+            this IJetfireClient client,
+            int id,
+            bool ignoreNullFields,
+            CancellationToken ct = default
+        ) => client.TransformConfigSetIgnoreNullFields(id, new TransformConfigIgnoreNullFieldsOptions { IgnoreNullFields = ignoreNullFields });
 
         public static Task<QueryResponse> Query(
             this IJetfireClient client,
@@ -173,6 +186,12 @@ namespace Cognite.Jetfire.Api
             TransformConfigPublishOptions request,
             CancellationToken ct = default
         ) => SendAsync(HttpMethod.Put, $"/api/transform/config/{id}/setPublished", request, ct);
+
+        public Task TransformConfigSetIgnoreNullFields(
+            int id,
+            TransformConfigIgnoreNullFieldsOptions request,
+            CancellationToken ct = default
+        ) => SendAsync(HttpMethod.Put, $"/api/transform/config/{id}/setIgnoreNullUpdate", request, ct);
 
         public Task<TransformJobId> TransformConfigStartJob(int id, CancellationToken ct = default)
             => SendAsync<TransformJobId>(HttpMethod.Post, $"/api/transform/config/run/{id}", ct);

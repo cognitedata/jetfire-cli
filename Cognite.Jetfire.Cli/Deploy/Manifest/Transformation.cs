@@ -13,6 +13,8 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
 
         public bool Shared { get; set; }
 
+        public bool IgnoreNullFields { get; set; } = true;
+
         public string Schedule { get; set; }
 
         public Destination Destination { get; set; }

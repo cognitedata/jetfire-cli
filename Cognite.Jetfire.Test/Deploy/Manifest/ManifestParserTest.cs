@@ -22,6 +22,7 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
                 "query: my-transformation.sql",
                 "schedule: '* * * * *'",
                 "shared: true",
+                "ignoreNullFields: false",
                 "apiKey:",
                 "  read: API_KEY_READ",
                 "  write: API_KEY_WRITE"
@@ -35,6 +36,7 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
             Assert.Equal("my-transformation.sql", manifest.Query);
             Assert.Equal("* * * * *", manifest.Schedule);
             Assert.True(manifest.Shared);
+            Assert.False(manifest.IgnoreNullFields);
             Assert.Equal("API_KEY_READ", manifest.ApiKey.Read);
             Assert.Equal("API_KEY_WRITE", manifest.ApiKey.Write);
         }
@@ -68,6 +70,14 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
             var manifests = parser.ParseManifests("name: foo");
             var manifest = Assert.Single(manifests);
             Assert.False(manifest.Shared);
+        }
+
+        [Fact]
+        public void IgnoreNullFieldsByDefault()
+        {
+            var manifests = parser.ParseManifests("name: foo");
+            var manifest = Assert.Single(manifests);
+            Assert.True(manifest.IgnoreNullFields);
         }
 
         [Theory]
