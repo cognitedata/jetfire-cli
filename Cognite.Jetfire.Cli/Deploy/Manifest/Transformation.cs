@@ -12,9 +12,8 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
         public string ExternalId { get; set; }
 
         public bool Shared { get; set; }
-        
-        [System.ComponentModel.DefaultValue(true)]
-        public bool IgnoreNullFields { get; set; }
+
+        public bool IgnoreNullFields { get; set; } = true;
 
         public string Schedule { get; set; }
 
