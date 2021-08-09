@@ -207,7 +207,8 @@ namespace Cognite.Jetfire.Cli.Deploy
             {
                 ConflictMode.Upsert => "upsert",
                 ConflictMode.Update => "update",
-                ConflictMode.Create => "create",
+                ConflictMode.Create => "abort",
+                ConflictMode.Abort => "abort",
                 ConflictMode.Delete => "delete",
                 _ => throw new ArgumentException($"Unknown conflict mode '{mode}'", nameof(mode))
             };

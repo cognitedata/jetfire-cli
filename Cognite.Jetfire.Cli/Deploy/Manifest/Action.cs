@@ -10,6 +10,7 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
         Upsert,
         Create,
         Update,
+        Abort,
         Delete
     }
 }
