@@ -79,7 +79,7 @@ namespace Cognite.Jetfire.Cli.Deploy
                 DestinationApiKey = manifest.WriteApiKey,
                 SourceOidcCredentials = manifest.ReadCredentials,
                 DestinationOidcCredentials = manifest.WriteCredentials
-            }); ;
+            });
         }
 
         async Task Update(TransformConfigRead transformToUpdate, ResolvedManifest manifest)
@@ -122,7 +122,7 @@ namespace Cognite.Jetfire.Cli.Deploy
                     await client.ScheduleDelete(id);
                 }
                 catch (JetfireApiException e)
-                when (e.StatusCode == HttpStatusCode.NotFound)
+                when ((int)e.StatusCode < 500)
                 { }
             }
             else
