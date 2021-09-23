@@ -120,6 +120,15 @@ namespace Cognite.Jetfire.Api.Model
             };
         }
 
+        public static DataSource NewRaw(string database, string table)
+        {
+            return new DataSource("raw")
+            {
+                Database = database,
+                Table = table
+            };
+        }
+
         public string RawType { get; set; }
 
         public string Database { get; set; }
