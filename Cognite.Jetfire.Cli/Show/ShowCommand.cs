@@ -125,7 +125,7 @@ namespace Cognite.Jetfire.Cli.Show
                 Console.WriteLine();
 
                 Console.WriteLine($"Destination:         {job.DestinationType}");
-                if (job.DestinationType == "raw_table")
+                if (job.DestinationType == "raw_table" || job.DestinationType == "raw")
                 {
                     Console.WriteLine($"   Database:        {job.DestinationDatabase}");
                     Console.WriteLine($"   Table:           {job.DestinationTable}");
