@@ -83,11 +83,10 @@ namespace Cognite.Jetfire.Cli.Show
             Console.WriteLine();
 
             Console.WriteLine($"Destination:    {transform.Destination.Type}");
-            if (transform.Destination.Type == "raw_table")
+            if (transform.Destination.Type == "raw_table" || transform.Destination.Type == "raw")
             {
                 Console.WriteLine($"   Database:    {transform.Destination.Database}");
                 Console.WriteLine($"   Table:       {transform.Destination.Table}");
-                Console.WriteLine($"   Raw type:    {transform.Destination.RawType}");
             }
             Console.WriteLine($"Action:         {transform.ConflictMode}");
             Console.WriteLine($"Schedule:       {transform?.Schedule?.ToString()?.ToLower() ?? "no schedule"}");
@@ -126,7 +125,7 @@ namespace Cognite.Jetfire.Cli.Show
                 Console.WriteLine();
 
                 Console.WriteLine($"Destination:         {job.DestinationType}");
-                if (job.DestinationType == "raw_table")
+                if (job.DestinationType == "raw_table" || job.DestinationType == "raw")
                 {
                     Console.WriteLine($"   Database:        {job.DestinationDatabase}");
                     Console.WriteLine($"   Table:           {job.DestinationTable}");
