@@ -195,7 +195,7 @@ namespace Cognite.Jetfire.Cli.Deploy
 
         static DataSource ToRawTableDataSource(Destination destination)
         {
-            return DataSource.NewRaw(
+            return DataSource.Raw(
                 database: destination.RawDatabase,
                 table: destination.RawTable
             );

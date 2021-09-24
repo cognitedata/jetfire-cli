@@ -83,7 +83,7 @@ namespace Cognite.Jetfire.Cli.Show
             Console.WriteLine();
 
             Console.WriteLine($"Destination:    {transform.Destination.Type}");
-            if (transform.Destination.Type == "raw_table" || transform.Destination.Type == "raw")
+            if (transform.Destination.Type == "raw")
             {
                 Console.WriteLine($"   Database:    {transform.Destination.Database}");
                 Console.WriteLine($"   Table:       {transform.Destination.Table}");
@@ -125,7 +125,7 @@ namespace Cognite.Jetfire.Cli.Show
                 Console.WriteLine();
 
                 Console.WriteLine($"Destination:         {job.DestinationType}");
-                if (job.DestinationType == "raw_table" || job.DestinationType == "raw")
+                if (job.DestinationType == "raw")
                 {
                     Console.WriteLine($"   Database:        {job.DestinationDatabase}");
                     Console.WriteLine($"   Table:           {job.DestinationTable}");

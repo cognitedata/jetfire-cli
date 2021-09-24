@@ -110,17 +110,7 @@ namespace Cognite.Jetfire.Api.Model
 
         // TODO: Implement proper polymorphic (de)serialization here
 
-        public static DataSource Raw(string database, string table, string rawType = "plain_raw")
-        {
-            return new DataSource("raw_table")
-            {
-                RawType = rawType,
-                Database = database,
-                Table = table
-            };
-        }
-
-        public static DataSource NewRaw(string database, string table)
+        public static DataSource Raw(string database, string table)
         {
             return new DataSource("raw")
             {
@@ -128,8 +118,6 @@ namespace Cognite.Jetfire.Api.Model
                 Table = table
             };
         }
-
-        public string RawType { get; set; }
 
         public string Database { get; set; }
 
