@@ -84,8 +84,6 @@ Alternatively when using OIDC, the action needs the client details instead of `a
       # as referenced in your manifests:
       COGNITE_CLIENT_ID: my-cognite-client-id
       COGNITE_CLIENT_SECRET: ${{ secrets.cognite_client_secret }}
-      COGNITE_PROJECT: my-cognite-project
-      TOKEN_URL: https://login.microsoftonline.com/<my-azure-tenant-id>/oauth2/v2.0/token
   with:
       # Credentials used for deployment
       path: transformations
