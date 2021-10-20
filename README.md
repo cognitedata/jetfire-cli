@@ -186,7 +186,7 @@ authentication:
     clientId: COGNITE_CLIENT_ID
     clientSecret: COGNITE_CLIENT_SECRET
   write:
-  # The following are explicit values, not environment variables
+    # The following are explicit values, not environment variables
     tokenUrl: "https://my-idp.com/oauth2/token"
     scopes:
       - https://bluefield.cognitedata.com/.default
