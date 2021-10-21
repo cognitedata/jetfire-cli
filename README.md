@@ -84,16 +84,15 @@ Alternatively when using OIDC, the action needs the client details instead of `a
       # as referenced in your manifests:
       COGNITE_CLIENT_ID: my-cognite-client-id
       COGNITE_CLIENT_SECRET: ${{ secrets.cognite_client_secret }}
-      COGNITE_PROJECT: my-cognite-project
-      TOKEN_URL: https://login.microsoftonline.com/<my-azure-tenant-id>/oauth2/v2.0/token
   with:
       # Credentials used for deployment
       path: transformations
       client-id: my-jetfire-client-id
       client-secret: ${{ secrets.jetfire_client_secret] }}
       token-url: https://login.microsoftonline.com/<my-azure-tenant-id>/oauth2/v2.0/token
-      scopes:
-          - https://<my-cluster>.cognitedata.com/.default
+      project-name: my-project-name
+      # If you need to provide multiple scopes, the format: "scope1 scope2 scope3"
+      scopes: https://<my-cluster>.cognitedata.com/.default
 ```
 
 
@@ -165,6 +164,7 @@ apiKey:
 # Either this or apiKey is required
 # The client credentials to be used in the transformation
 authentication:
+  # The following are explicit values, not environment variables
   tokenUrl: "https://my-idp.com/oauth2/token"
   scopes:
     - https://bluefield.cognitedata.com/.default
@@ -175,6 +175,7 @@ authentication:
 # Alternatively, if you want to use separate credentials for read and write:
 authentication:
   read:
+    # The following are explicit values, not environment variables
     tokenUrl: "https://my-idp.com/oauth2/token"
     scopes:
       - https://bluefield.cognitedata.com/.default
@@ -183,6 +184,7 @@ authentication:
     clientId: COGNITE_CLIENT_ID
     clientSecret: COGNITE_CLIENT_SECRET
   write:
+    # The following are explicit values, not environment variables
     tokenUrl: "https://my-idp.com/oauth2/token"
     scopes:
       - https://bluefield.cognitedata.com/.default
