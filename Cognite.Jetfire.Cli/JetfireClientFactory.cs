@@ -17,6 +17,8 @@ namespace Cognite.Jetfire.Cli
         static readonly string ClientIdEnvironmentVariable = "JETFIRE_CLIENT_ID";
         static readonly string ClientSecretEnvironmentVariable = "JETFIRE_CLIENT_SECRET";
         static readonly string TokenScopesEnvironmentVariable = "JETFIRE_TOKEN_SCOPES";
+        static readonly string TokenAudienceEnvironmentVariable = "JETFIRE_TOKEN_AUDIENCE";
+
         static readonly string ProjectEnvironmentVariable = "JETFIRE_PROJECT";
         static readonly string ClusterEnvironmentVariable = "JETFIRE_CLUSTER";
 
@@ -35,21 +37,29 @@ namespace Cognite.Jetfire.Cli
             var clientId = secrets.GetNamedSecret(ClientIdEnvironmentVariable).TrimToNull();
             var clientSecret = secrets.GetNamedSecret(ClientSecretEnvironmentVariable).TrimToNull();
             var tokenScopes = secrets.GetNamedSecret(TokenScopesEnvironmentVariable).TrimToNull();
+            var tokenAudience = secrets.GetNamedSecret(TokenAudienceEnvironmentVariable).TrimToNull();
             var project = secrets.GetNamedSecret(ProjectEnvironmentVariable).TrimToNull();
 
             if (apiKey != null)
             {
                 return new ApiKeyCredentials(apiKey);
             }
-            else if (tokenUrl != null && clientId != null && clientSecret != null && tokenScopes != null && project != null)
+            else if (tokenUrl != null && clientId != null && clientSecret != null && project != null)
             {
+                var scopeList = new List<string>();
+                if (tokenScopes != null && tokenScopes != "")
+                {
+                    scopeList = new List<string>(tokenScopes.Split(","));
+                }
+
                 var authConfig = new AuthenticatorConfig
                 {
                     Implementation = AuthenticatorConfig.AuthenticatorImplementation.Basic,
                     ClientId = clientId,
                     Secret = clientSecret,
                     TokenUrl = tokenUrl,
-                    Scopes = new List<string>(tokenScopes.Split(","))
+                    Scopes = scopeList,
+                    Audience = tokenAudience
                 };
                 return new TokenCredentials(authConfig, project);
             }

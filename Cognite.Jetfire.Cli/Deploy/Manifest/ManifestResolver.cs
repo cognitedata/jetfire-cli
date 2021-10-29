@@ -72,21 +72,37 @@ namespace Cognite.Jetfire.Cli.Deploy.Manifest
                 }
                 else if (manifest.Authentication != null)
                 {
+                    var readScopes = manifest.Authentication.Read.Scopes;
+                    var readScopeStringified = "";
+                    if (readScopes != null && readScopes.Length > 0)
+                    {
+                        readScopeStringified = string.Join(" ", readScopes);
+                    }
                     resolvedManifest.ReadCredentials = new FlatOidcCredentials
                     {
                         CdfProjectName = manifest.Authentication.Read.CdfProjectName,
                         ClientId = GetSecret(manifest.Authentication.Read.ClientId, result),
                         ClientSecret = GetSecret(manifest.Authentication.Read.ClientSecret, result),
                         TokenUri = manifest.Authentication.Read.TokenUrl,
-                        Scopes = string.Join(" ", manifest.Authentication.Read.Scopes)
+                        Scopes = readScopeStringified,
+                        Audience = manifest.Authentication.Audience
                     };
+
+                    var writeScopes = manifest.Authentication.Write.Scopes;
+                    var writeScopeStringified = "";
+                    if (writeScopes != null && writeScopes.Length > 0)
+                    {
+                        writeScopeStringified = string.Join(" ", writeScopes);
+                    }
+
                     resolvedManifest.WriteCredentials = new FlatOidcCredentials
                     {
                         CdfProjectName = manifest.Authentication.Write.CdfProjectName,
                         ClientId = GetSecret(manifest.Authentication.Write.ClientId, result),
                         ClientSecret = GetSecret(manifest.Authentication.Write.ClientSecret, result),
                         TokenUri = manifest.Authentication.Write.TokenUrl,
-                        Scopes = string.Join(" ", manifest.Authentication.Write.Scopes)
+                        Scopes = writeScopeStringified,
+                        Audience = manifest.Authentication.Audience
                     };
                 }
                 else

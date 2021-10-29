@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="4.7.2" />
-    <PackageReference Include="Cognite.ExtractorUtils" Version="1.0.0-alpha-028" />
+    <PackageReference Include="Cognite.ExtractorUtils" Version="1.0.0-beta-016" />
   </ItemGroup>
 
 </Project>

@@ -11,7 +11,10 @@ inputs:
     description: 'CDF project name (only required when using OIDC credentials)'
     required: false
   scopes:
-    description: 'List of OIDC scopes (whitespace separated)'
+    description: 'List of OIDC scopes (comma separated)'
+    required: false
+  audience:
+    description: 'List of OIDC audience'
     required: false
   client-id:
     description: 'OAuth2 client ID'
@@ -39,4 +42,5 @@ runs:
     JETFIRE_CLIENT_ID: ${{ inputs.client-id }}
     JETFIRE_CLIENT_SECRET: ${{ inputs.client-secret }}
     JETFIRE_TOKEN_SCOPES: ${{ inputs.scopes }}
+    JETFIRE_TOKEN_AUDIENCE: ${{inputs.audience}}
   args: ["--cluster", "${{ inputs.cluster }}", "deploy", "${{ inputs.path }}" ]
