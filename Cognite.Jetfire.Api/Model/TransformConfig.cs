@@ -60,6 +60,7 @@ namespace Cognite.Jetfire.Api.Model
         public string ClientSecret { get; set; }
 
         public string Scopes { get; set; }
+        public string Audience { get; set; }
 
         public string TokenUri { get; set; }
 

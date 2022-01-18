@@ -19,7 +19,7 @@ notifications:
 
 ### Authenticate
 
-To use `jetfire-cli`, the `JETFIRE_API_KEY` environment variable must be set to a valid API key for a service account which has access to Jetfire/Transformations. Alternatively, when using OIDC, you need to set the environment variables `JETFIRE_PROJECT`, `JETFIRE_CLIENT_ID`, `JETFIRE_CLIENT_SECRET`, `JETFIRE_TOKEN_SCOPES` and `JETFIRE_TOKEN_URL` instead.
+To use `jetfire-cli`, the `JETFIRE_API_KEY` environment variable must be set to a valid API key for a service account which has access to Jetfire/Transformations. Alternatively, when using OIDC, you need to set the environment variables `JETFIRE_PROJECT`, `JETFIRE_CLIENT_ID`, `JETFIRE_CLIENT_SECRET`, `JETFIRE_TOKEN_SCOPES` and `JETFIRE_TOKEN_URL` instead. `JETFIRE_TOKEN_AUDIENCE` should be used if you need `audience`.
 
 By default, `jetfire-cli` runs against the main CDF cluster (europe-west1-1).
 To use a different cluster, specify the `--cluster` parameter or set the environment variable `JETFIRE_CLUSTER`. Note that this is a global parameter, which must be specified before the subcommand.
@@ -91,8 +91,9 @@ Alternatively when using OIDC, the action needs the client details instead of `a
       client-secret: ${{ secrets.jetfire_client_secret] }}
       token-url: https://login.microsoftonline.com/<my-azure-tenant-id>/oauth2/v2.0/token
       project-name: my-project-name
-      # If you need to provide multiple scopes, the format: "scope1 scope2 scope3"
+      # If you need to provide multiple scopes, the format: "scope1,scope2,scope3"
       scopes: https://<my-cluster>.cognitedata.com/.default
+      # audience: Audience is availble in case needed.
 ```
 
 
@@ -180,6 +181,7 @@ authentication:
     scopes:
       - https://bluefield.cognitedata.com/.default
     cdfProjectName: my-project
+    audience: "" # optional
     # The following two is given as the name of an environment variable
     clientId: COGNITE_CLIENT_ID
     clientSecret: COGNITE_CLIENT_SECRET
@@ -189,6 +191,7 @@ authentication:
     scopes:
       - https://bluefield.cognitedata.com/.default
     cdfProjectName: another-project
+    audience: "" # optional
     # The following two is given as the name of an environment variable
     clientId: COGNITE_CLIENT_ID
     clientSecret: COGNITE_CLIENT_SECRET
