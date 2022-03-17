@@ -1,3 +1,5 @@
+## NOTE: This CLI will soon be deprecated. Please use the [new CLI](https://github.com/cognitedata/transformations-cli)
+
 # jetfire-cli
 
 Command-line interface for Jetfire/Transformations.
