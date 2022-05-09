@@ -33,14 +33,16 @@ inputs:
       which will be the root of the repository when using actions/checkout with default settings.
     required: true
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  env:
-    JETFIRE_API_KEY: ${{ inputs.api-key }}
-    JETFIRE_TOKEN_URL: ${{ inputs.token-url }}
-    JETFIRE_PROJECT: ${{ inputs.project-name }}
-    JETFIRE_CLIENT_ID: ${{ inputs.client-id }}
-    JETFIRE_CLIENT_SECRET: ${{ inputs.client-secret }}
-    JETFIRE_TOKEN_SCOPES: ${{ inputs.scopes }}
-    JETFIRE_TOKEN_AUDIENCE: ${{inputs.audience}}
-  args: ["--cluster", "${{ inputs.cluster }}", "deploy", "${{ inputs.path }}" ]
+  using: composite
+  steps:
+    - name: Deploy using new Transformations CLI
+      uses: cognitedata/transformations-cli@main
+      with:
+        path: ${{ inputs.path }}
+        api-key: ${{ inputs.api-key }}
+        client-id: ${{ inputs.client-id }}
+        client-secret: ${{ inputs.client-secret }}
+        cdf-project-name: ${{ inputs.project-name }}
+        token-url: ${{ inputs.token-url }}
+        scopes: ${{ inputs.scopes }}
+        legacy-mode: true
