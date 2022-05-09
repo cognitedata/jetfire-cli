@@ -39,10 +39,12 @@ runs:
       uses: cognitedata/transformations-cli@main
       with:
         path: ${{ inputs.path }}
+        cluster: ${{inputs.cluster}}
         api-key: ${{ inputs.api-key }}
         client-id: ${{ inputs.client-id }}
         client-secret: ${{ inputs.client-secret }}
         cdf-project-name: ${{ inputs.project-name }}
         token-url: ${{ inputs.token-url }}
         scopes: ${{ inputs.scopes }}
+        audience: ${{inputs.audience}}
         legacy-mode: true
